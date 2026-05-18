@@ -1,0 +1,11 @@
+{
+  "name": "xenophon-contabulate",
+  "private": true,
+  "description": "Static Xenophon contabulate app for Perseus Greek texts.",
+  "scripts": {
+    "test:e2e": "playwright test"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.54.0"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "id": "xenophon",
+  "emoji": "🏺",
+  "title": "Xenophon",
+  "tagline": "Xenophon Tabular Explorer",
+  "language": "Ancient Greek",
+  "url": "https://xenophon.contabulate.org/",
+  "source": "https://github.com/brainheart/xenophon-contabulate",
+  "text_label": "works",
+  "segment_label": "segments",
+  "sample_queries": []
+}

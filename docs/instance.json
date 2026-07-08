@@ -1,0 +1,20 @@
+{
+  "schema": 1,
+  "id": "xenophon",
+  "emoji": "🏺",
+  "title": "Xenophon",
+  "tagline": "Xenophon Tabular Explorer",
+  "language": "Ancient Greek",
+  "url": "https://xenophon.contabulate.org/",
+  "source": "https://github.com/brainheart/xenophon-contabulate",
+  "sample_queries": [],
+  "updated": "2026-07-08",
+  "stats": {
+    "texts": 14,
+    "text_label": "works",
+    "segments": 6273,
+    "segment_label": "segments",
+    "words": 312209,
+    "distinct_words": 39733
+  }
+}

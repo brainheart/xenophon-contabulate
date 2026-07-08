@@ -3,14 +3,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Search Xenophon’s works in Ancient Greek by word, phrase, or regex across books, sections, and segments. Built from Perseus Digital Library TEI XML.">
+  <meta name="description" content="Search Xenophon’s works in Ancient Greek by word, phrase, or regex across works, books, chapters, segments, and vocabulary.">
   <meta name="author" content="Reinhard Engels">
-  <meta property="og:title" content="Contabulate: Xenophon — Greek Tabular Search">
-  <meta property="og:description" content="Search Xenophon’s works in Ancient Greek by word, phrase, or regex across books, sections, and segments. Built from Perseus Digital Library TEI XML.">
+  <link rel="canonical" href="https://xenophon.contabulate.org/">
+  <meta property="og:title" content="Contabulate: Xenophon Tabular Explorer">
+  <meta property="og:description" content="Search Xenophon’s works in Ancient Greek by word, phrase, or regex across works, books, chapters, segments, and vocabulary.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://xenophon.contabulate.org/">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cpath fill='%238b1538' d='M53 8c-12 2-21 11-25 22l-6 17c-1 3-4 5-7 6l-4 2 2-4c1-3 3-6 6-7l17-6C47 34 56 25 58 13l1-6-6 1z'/%3E%3Cpath fill='%238b1538' d='M21 43l-6 6 2 2 6-6z'/%3E%3Cpath fill='%238b1538' d='M31 22l11 11 2-2-11-11z'/%3E%3C/svg%3E">
-  <title>🏛 Contabulate: Xenophon — Greek Tabular Search</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='56' font-size='56'%3E🏺%3C/text%3E%3C/svg%3E">
+  <title>🏺 Xenophon Tabular Explorer</title>
   <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
@@ -20,50 +21,55 @@
       <p id="loadingMessage" class="loading-message">Loading data...</p>
     </div>
   </div>
-  <h1><a href="https://contabulate.org/">Contabulate</a>: 🏺 Xenophon — Greek Tabular Search</h1>
-  <p class="muted">Search words, bigrams, or trigrams across Xenophon’s works, books, chapters, and segments. Use regex (e.g., <code>^Σωκράτης$</code>) or plain text. Source text courtesy of the <a href="https://www.perseus.tufts.edu/hopper/" target="_blank" rel="noopener">Perseus Digital Library</a>.</p>
-
-  <div class="tabs is-hidden">
-    <button class="tab-btn active" data-tab="segments">Rows are Contexts</button>
-    <button class="tab-btn" data-tab="lines">Rows are Segments</button>
   </div>
+  <h1><a href="https://contabulate.org/">Contabulate</a>: 🏺 Xenophon Tabular Explorer</h1>
+  <p class="muted">A sortable, filterable table of Xenophon’s works in Ancient Greek — by work, book, chapter, or segment, or flipped to its vocabulary: word, bigram, and trigram rows. Add search-term columns (1–3 words, exact or regex) and text metrics like sentence length and lexical rarity — the metrics live under the <strong>+</strong> at the right edge of the table.</p>
 
   <div class="tab-content" id="segmentsTab">
     <div class="controls">
       <div class="controls-row">
-        <button id="addColumnBtn" class="add-column-btn" type="button">Add Column</button>
-        <span class="label-strong">for</span>
-        <select id="newTermDisplay" class="control-select">
-          <option value="count" selected># hits</option>
-          <option value="pct">% share</option>
-        </select>
-        <span class="label-strong">by</span>
-        <select id="gran" class="control-select">
-          <option value="play" selected>Work</option>
-          <option value="act">Book</option>
-          <option value="chapter">Chapter</option>
-          <option value="line">Segment</option>
-        </select>
-        <span class="label-strong">matching</span>
-        <select id="matchMode" class="control-select">
-          <option value="exact">exact term</option>
-          <option value="regex">regex pattern</option>
-        </select>
-        <span id="ngramModeGroup">
-          <span class="label-strong">in</span>
-          <select id="ngramMode" class="control-select">
-            <option value="1" selected>single words</option>
-            <option value="2">bigrams</option>
-            <option value="3">trigrams</option>
+        <div class="control-group">
+          <span class="label-strong">Each row is a</span>
+          <select id="gran" class="control-select">
+            <option value="play" selected>Work</option>
+            <option value="act">Book</option>
+            <option value="chapter">Chapter</option>
+            <option value="line">Segment</option>
+            <option value="word">Word</option>
+            <option value="bigram">Bigram</option>
+            <option value="trigram">Trigram</option>
           </select>
-        </span>
-        <input id="q" class="query-input" type="text" placeholder="Type a search term here, then hit &quot;Add Column&quot;">
+        </div>
+        <span class="control-divider" aria-hidden="true"></span>
+        <div class="control-group control-group-grow">
+          <span class="label-strong">Word &amp; phrase columns:</span>
+          <select id="newTermDisplay" class="control-select">
+            <option value="count" selected># hits</option>
+            <option value="pct">% share</option>
+          </select>
+          <span class="label-strong">matching</span>
+          <select id="matchMode" class="control-select">
+            <option value="exact">exact term</option>
+            <option value="regex">regex pattern</option>
+          </select>
+          <span id="ngramModeGroup">
+            <span class="label-strong">in</span>
+            <select id="ngramMode" class="control-select">
+              <option value="1" selected>single words</option>
+              <option value="2">bigrams</option>
+              <option value="3">trigrams</option>
+            </select>
+          </span>
+          <input id="q" class="query-input" type="text" dir="auto" placeholder="Type a search term here, then hit &quot;Add&quot;">
+          <button id="addColumnBtn" class="add-column-btn" type="button">Add</button>
+        </div>
+        <button id="addColumnsMobile" class="add-columns-mobile" type="button" aria-haspopup="dialog">+ Metric columns</button>
       </div>
       <div id="termWarning" class="warning is-hidden" role="status" aria-live="polite"></div>
     </div>
 
     <details>
-      <summary class="sr"><strong>Options</strong></summary>
+      <summary class="sr"><strong>Display options</strong></summary>
       <div class="options-row">
         <label><input type="checkbox" class="color-scale-toggle" checked> Color scale numeric columns</label>
         <label><input type="checkbox" class="highlight-toggle" checked> Highlight matching segments</label>
@@ -85,22 +91,25 @@
           </label>
         </div>
       </div>
-      <div class="color-scale-legend"></div>
-      <div class="deep-link-wrap">
-        <strong>Deep Link:</strong>
-        <a class="deep-link" href="#" target="_blank" rel="noopener"></a>
-      </div>
     </details>
 
+    <div class="table-toolbar">
+      <div id="segmentsFilterActions" class="filter-actions is-hidden">
+        <span class="label-strong">Filters:</span>
+        <span id="segmentsActiveFilters" class="active-filter-chips"></span>
+        <button id="clearSegmentsFilters" class="link-btn link-btn-no-padding">Clear all</button>
+      </div>
+      <label id="vocabNamesToggle" class="vocab-names-toggle is-hidden" title="Hide word forms configured as proper names for the works in scope; the list is editable below when scoped to one work">
+        <input type="checkbox" id="vocabNamesCheckbox"> Hide proper names
+      </label>
+      <div class="color-scale-legend color-scale-legend-inline" title="Each numeric column is shaded from its lowest to highest value"></div>
+    </div>
+    <div id="nameFilterEditor" class="is-hidden"></div>
     <table id="results">
       <thead><tr id="headRow"></tr></thead>
       <tbody></tbody>
     </table>
-    <div id="segmentsFilterActions" class="filter-actions is-hidden">
-      <button id="clearSegmentsFilters" class="link-btn link-btn-no-padding">Clear all filters for this view</button>
-      <span class="muted filters-info" id="segmentsFiltersInfo"></span>
-    </div>
-    
+
     <div class="pagination is-hidden" id="segmentsPagination">
       <button id="segmentsFirstPage">First</button>
       <button id="segmentsPrevPage">Prev</button>
@@ -120,90 +129,17 @@
     </div>
   </div>
 
-  <div class="tab-content is-hidden" id="linesTab">
-    <div class="controls">
-      <div class="controls-row">
-        <span class="label-strong">Show segments with</span>
-        <select id="linesNgramMode" class="control-select">
-          <option value="1" selected>single word</option>
-          <option value="2">bigram</option>
-          <option value="3">trigram</option>
-        </select>
-        <span class="label-strong">matching the</span>
-        <select id="linesMatchMode" class="control-select">
-          <option value="exact">exact term</option>
-          <option value="regex">regex pattern</option>
-        </select>
-        <input type="text" class="query-input-lines" id="linesQuery" placeholder="e.g., Σωκράτης, ^Κῦρος$, στρατιώτας" value="Σωκράτης">
-      </div>
-    </div>
-
-    <details>
-      <summary class="sr"><strong>Options</strong></summary>
-      <div class="options-row">
-        <label><input type="checkbox" class="color-scale-toggle" checked> Color scale numeric columns</label>
-        <label><input type="checkbox" class="highlight-toggle" checked> Highlight matching segments</label>
-        <button id="downloadLinesCsv" class="download-btn" type="button">Download CSV</button>
-        <div class="color-scale-options">
-          <label>Palette:
-            <select class="color-scale-palette">
-              <option value="blue-diverging" selected>Gray ↔ Blue (default)</option>
-              <option value="blue-linear">Gray ↔ Blue (alt)</option>
-              <option value="burgundy-gold">Gold ↔ Burgundy</option>
-            </select>
-          </label>
-          <label>Steps:
-            <select class="color-scale-steps">
-              <option value="5" selected>5</option>
-              <option value="7">7</option>
-            </select>
-          </label>
-        </div>
-      </div>
-      <div class="color-scale-legend"></div>
-      <div class="deep-link-wrap">
-        <strong>Deep Link:</strong>
-        <a class="deep-link" href="#" target="_blank" rel="noopener"></a>
-      </div>
-    </details>
-
-    <table id="linesResults">
-      <thead><tr id="linesHeadRow"></tr></thead>
-      <tbody id="linesTableBody"></tbody>
-    </table>
-    <div id="linesFilterActions" class="filter-actions is-hidden">
-      <button id="clearLinesFilters" class="link-btn link-btn-no-padding">Clear all filters for this view</button>
-      <span class="muted filters-info" id="linesFiltersInfo"></span>
-    </div>
-
-    <div class="pagination is-hidden" id="linesPagination">
-      <button id="linesFirstPage">First</button>
-      <button id="linesPrevPage">Prev</button>
-      <span class="page-info" id="linesPageInfo">Page 1 of 1</span>
-      <button id="linesNextPage">Next</button>
-      <button id="linesLastPage">Last</button>
-      <label>
-        Rows per page:
-        <select id="linesPageSize">
-          <option value="25">25</option>
-          <option value="50" selected>50</option>
-          <option value="100">100</option>
-          <option value="250">250</option>
-        </select>
-      </label>
-      <span class="page-info" id="linesTotalInfo"></span>
-    </div>
-  </div>
-
 <script src="js/utils.js"></script>
 <script src="js/table-ui.js"></script>
 <script src="js/filter-popover.js"></script>
 <script src="js/color-scale.js"></script>
-<script src="js/play-detail.js"></script>
-<script src="js/lines-tab.js"></script>
+<script src="js/name-filter.js"></script>
+<script src="js/add-column-popover.js"></script>
 <script>
 (async function() {
   window.__contabulateReady = false;
+  const loadingIndicator = document.getElementById('loadingIndicator');
+  const loadingMessage = document.getElementById('loadingMessage');
   const q = document.getElementById('q');
   const gran = document.getElementById('gran');
   const matchMode = document.getElementById('matchMode');
@@ -213,9 +149,10 @@
   const theadRow = document.getElementById('headRow');
   const tbody = document.querySelector('#results tbody');
   const showZeroRowsToggle = document.getElementById('showZeroRows');
+  const commentatorColumnControls = document.getElementById('commentatorColumnControls');
   const addColumnBtn = document.getElementById('addColumnBtn');
   const termWarning = document.getElementById('termWarning');
-  const qPlaceholderText = 'Type a search term here, then hit "Add Column"';
+  const qPlaceholderText = 'Type a search term here, then hit "Add"';
   const addColumnPromptScheduleMs = [3000, 5000, 10000];
   const allowAddColumnPromptMotion = !(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
   let qPlaceholderTimer = null;
@@ -225,9 +162,38 @@
   let addColumnPromptStepIndex = 0;
   let extraTerms = [];
   let showZeroRows = false;
+  // Optional metric columns (off by default; toggled in Options, persisted in deep links via `mc=`)
+  const METRIC_COL_DEFS = [
+    { code: 'wps', key: 'words_per_sentence', label: 'Words/Sentence', decimals: 1,
+      tooltip: 'Average sentence length: words per sentence, with sentences split on . ! ? — higher = longer, more complex sentences.' },
+    { code: 'wlen', key: 'mean_word_length', label: 'Word Length', decimals: 2,
+      tooltip: 'Average word length in letters. Higher = longer words.' },
+    { code: 'rare', key: 'lexical_rarity', label: 'Lexical Rarity', decimals: 2,
+      tooltip: 'How rare the vocabulary is: each word is scored by its rarity in the whole corpus (−log10 of its frequency share), averaged over the row’s words. Higher = rarer vocabulary.' },
+    { code: 'mattr', key: 'mattr_50', label: 'Vocab Diversity', decimals: 3, granOnly: ['play'],
+      tooltip: 'Vocabulary diversity (MATTR-50): type–token ratio averaged over a moving 50-word window, 0–1. Higher = more varied vocabulary; comparable across texts of different lengths. Available at Work level.' },
+    { code: 'hapax', key: 'hapax_share', label: '% Hapax', decimals: 1,
+      tooltip: 'Share of word forms that appear nowhere else in Xenophon (hapax legomena). Higher = more unique vocabulary.' },
+  ];
+  let enabledMetricCodes = [];
+  const metricToggles = Array.from(document.querySelectorAll('.metric-col-toggle'));
+  function syncMetricToggles() {
+    metricToggles.forEach(cb => { cb.checked = enabledMetricCodes.includes(cb.dataset.metric); });
+  }
+  let selectedCommentatorColumns = new Set();
+  let commentatorColumnFilterText = '';
   const resultsTable = document.getElementById('results');
   let rankHintBubbleEl = null;
   let rankHintBubbleTimer = null;
+
+  function setLoadingState(isLoading, message) {
+    if (loadingMessage && typeof message === 'string' && message) {
+      loadingMessage.textContent = message;
+    }
+    if (loadingIndicator) {
+      setElementHidden(loadingIndicator, !isLoading);
+    }
+  }
 
   function stopQPlaceholderAnimation(clearNow = false) {
     if (qPlaceholderTimer) {
@@ -500,23 +466,76 @@
     return true;
   }
   // Sort state defaults (declare before deep-link logic uses them)
-  let sortKey = 'location', sortDir = 'asc';
-  let linesTabController = null;
+  let sortKey = null, sortDir = 'desc';
   let segmentsColumnOrder = [];
   let segmentsColumnDefs = [];
   // Column filters maps (declare early for deep-link)
   // Scope segments filters by current granularity (play/genre/act/chapter/scene/line/character)
   const segmentsFiltersByGran = new Map(); // gran -> Map(columnKey -> filter)
-  function getSegmentsFiltersMap() {
-    const g = (typeof gran !== 'undefined' && gran && gran.value) ? gran.value : 'act';
-    if (!segmentsFiltersByGran.has(g)) segmentsFiltersByGran.set(g, new Map());
-    return segmentsFiltersByGran.get(g);
+  function normalizeGranularity(value) {
+    if (value === 'verse' || value === 'line' || value === 'scene') return 'line';
+    return ['genre', 'play', 'act', 'chapter', 'character', 'word', 'bigram', 'trigram'].includes(value) ? value : 'line';
   }
+  function granularityToURL(value) {
+    const normalized = normalizeGranularity(value);
+    return normalized === 'line' ? 'verse' : normalized;
+  }
+  // Vocabulary granularities: rows are n-grams instead of text spans
+  const VOCAB_GRANULARITIES = { word: 1, bigram: 2, trigram: 3 };
+  function isVocabGranularity(value) {
+    return Object.prototype.hasOwnProperty.call(VOCAB_GRANULARITIES, value);
+  }
+  function vocabNFor(value) {
+    return VOCAB_GRANULARITIES[value] || 1;
+  }
+  function vocabGranForN(n) {
+    return n === 2 ? 'bigram' : n === 3 ? 'trigram' : 'word';
+  }
+  let vocabExcludeNames = false;
+  let nameEditorOpen = false;
+  // Word/bigram/trigram share one filter map, so switching the n-gram size
+  // keeps the location/genre scope (and the n-gram text filter) in place.
+  function segmentsFilterMapKey(value) {
+    const g = normalizeGranularity(value);
+    return isVocabGranularity(g) ? 'vocab' : g;
+  }
+  function getSegmentsFiltersMap() {
+    const key = segmentsFilterMapKey(typeof gran !== 'undefined' && gran ? gran.value : 'line');
+    if (!segmentsFiltersByGran.has(key)) segmentsFiltersByGran.set(key, new Map());
+    return segmentsFiltersByGran.get(key);
+  }
+  // The location/genre scope follows manual granularity switches: what you
+  // are looking at stays what you are looking at, one level up or down.
+  let lastGranValue = null;
+  function carryScopeFilters(fromGranValue) {
+    if (fromGranValue == null) return;
+    const fromMap = segmentsFiltersByGran.get(segmentsFilterMapKey(fromGranValue));
+    const toMap = getSegmentsFiltersMap();
+    if (!fromMap || fromMap === toMap) return;
+    for (const k of ['location', 'genre']) {
+      const v = fromMap.get(k);
+      if (v) toMap.set(k, { ...v });
+      else toMap.delete(k);
+    }
+  }
+  // Drill-down constants (declared early: deep links render before the
+  // drill helpers further down are reached in source order)
+  const TERM_COUNT_KEY_RE = /^t\d+_count$/;
+  const DRILL_TARGETS = {
+    genre: { num_plays: 'play', num_chapters: 'act', verse_count: 'line' },
+    play: { num_chapters: 'act', verse_count: 'line' },
+    act: { num_chapters: 'chapter', verse_count: 'line' },
+    chapter: { verse_count: 'line' }
+  };
+  const DRILL_NOUNS = { play: 'works', act: 'books', chapter: 'chapters', line: 'segments', word: 'words', bigram: 'bigrams', trigram: 'trigrams' };
+  // Declared early: deep links can render vocabulary views during startup
+  const vocabRowsCache = new Map();
   // Segments pagination and rows (declare early for deep-link)
   let segmentsCurrentPage = 1;
   let segmentsPageSize = 50;
   let segmentsAllRows = [];
   let lastSegmentsBaseRows = [];
+  let segmentsSearchRequestId = 0;
   function normalizeSegmentsColumnKey(key) {
     return key === 'ref_code' ? 'location' : key;
   }
@@ -527,14 +546,18 @@
     // Display
     p.set('cs', colorScaleState.colorScaleEnabled ? '1' : '0');
     p.set('zr', showZeroRows ? '1' : '0');
+    const selectedCommentatorsParam = getSelectedCommentatorKeys().join(',');
+    if (selectedCommentatorsParam) p.set('commentators', selectedCommentatorsParam);
     // palette and steps omitted for cleaner URLs
     p.set('hl', colorScaleState.highlightEnabled ? '1' : '0');
+    if (enabledMetricCodes.length) p.set('mc', enabledMetricCodes.join(','));
     // Segments
     const segTermState = getActiveTermsStateParts();
     p.set('q', segTermState.primary ? segTermState.primary.text : '');
     p.set('nm', ngramMode.value);
-    p.set('gran', gran.value);
+    p.set('gran', granularityToURL(gran.value));
     p.set('mm', matchMode.value);
+    if (isVocabGranularity(gran.value)) p.set('xn', vocabExcludeNames ? '1' : '0');
     const allTermSpecs = [segTermState.primary, ...segTermState.extras].filter(Boolean);
     const extras = segTermState.extras.map(t => (t && t.text ? t.text.trim() : '')).filter(Boolean);
     const termSpecsParam = encodeTermSpecsParam(allTermSpecs);
@@ -550,6 +573,10 @@
     if (sortKey) p.set('sk', sortKey);
     if (sortDir) p.set('sd', sortDir);
     if (segmentsColumnOrder.length) p.set('co', segmentsColumnOrder.join(','));
+    const commentaryParam = (typeof window.getCommentaryDetailParam === 'function')
+      ? window.getCommentaryDetailParam()
+      : '';
+    if (commentaryParam) p.set('cm', commentaryParam);
     // Segment column filters (only for current granularity)
     const segFilters = getSegmentsFiltersMap();
     for (const [key, v] of segFilters.entries()) {
@@ -615,50 +642,94 @@
     }
     return m;
   }
+  // The address bar mirrors the app state: refinements (sorts, filters,
+  // toggles) replace the current history entry, while navigation-like
+  // changes (granularity switches/drills, opening the commentary modal)
+  // push one, so the browser Back button walks the drill-down trail.
+  // Armed only after startup: early drawer refreshes must not write the URL,
+  // or applyStateFromURL would read back its own echo as a deep link.
+  let historySyncEnabled = false;
+  let historyReplaceOnlyUntil = 0;
+  function syncHistoryUrl(search) {
+    if (!historySyncEnabled) return;
+    if (typeof history === 'undefined' || typeof history.replaceState !== 'function') return;
+    if (search === location.search) return;
+    let mode = 'replaceState';
+    if (Date.now() > historyReplaceOnlyUntil) {
+      const oldSp = new URLSearchParams(location.search);
+      const newSp = new URLSearchParams(search);
+      // A pristine URL means the default view (works), so a first action that
+      // keeps that granularity replaces rather than pushes.
+      const oldGran = oldSp.has('gran') ? oldSp.get('gran') : granularityToURL('play');
+      const granChanged = oldGran !== newSp.get('gran');
+      const modalOpened = !oldSp.get('cm') && !!newSp.get('cm');
+      // Scope changes at the same granularity (ancestor-cell filters) are
+      // navigations too — Back should undo them.
+      const scopeChanged = oldSp.get('s_ft_location') !== newSp.get('s_ft_location');
+      if (granChanged || modalOpened || scopeChanged) mode = 'pushState';
+    }
+    try { history[mode](null, '', location.pathname + search); } catch (_) { /* ignore */ }
+  }
   function updateDeepLink() {
     const p = buildQueryParamsFromState();
-    const url = location.origin + location.pathname + '?' + p.toString();
-    document.querySelectorAll('.deep-link').forEach(a => { a.href = url; a.textContent = url; });
+    const search = '?' + p.toString();
+    syncHistoryUrl(search);
+  }
+  function segmentsFilterColumnLabel(key) {
+    const def = (segmentsColumnDefs || []).find(c => c && c.key === key);
+    if (def && def.label) return def.label;
+    if (key === 'location') return 'Location';
+    if (key === 'genre') return 'Genre';
+    return key;
+  }
+  function describeSegmentsFilterValue(v) {
+    if (v.type === 'text') {
+      const pattern = String(v.pattern || '');
+      if (pattern.startsWith('^') && pattern.endsWith('$')) {
+        const literal = pattern.slice(1, -1).replace(/\\(.)/g, '$1');
+        if ('^' + escapeRegexText(literal) + '$' === pattern) return `is ${literal}`;
+      }
+      if (pattern.startsWith('^')) {
+        // Drill filters are anchored escaped literals; show them plainly
+        const literal = pattern.slice(1).replace(/\\(.)/g, '$1');
+        if ('^' + escapeRegexText(literal) === pattern) return `starts with ${literal}`;
+      }
+      return `matches ${pattern}`;
+    }
+    const hasMin = v.min !== '' && v.min != null;
+    const hasMax = v.max !== '' && v.max != null;
+    if (hasMin && hasMax) return `${v.min}–${v.max}`;
+    if (hasMin) return `≥ ${v.min}`;
+    if (hasMax) return `≤ ${v.max}`;
+    return 'set';
   }
   function updateSegmentsFilterActions() {
     const container = document.getElementById('segmentsFilterActions');
     if (!container) return;
-    const count = getSegmentsFiltersMap().size;
-    if (count > 0) {
-      setElementHidden(container, false);
-      const info = document.getElementById('segmentsFiltersInfo');
-      if (info) info.textContent = `(${count} active filter${count>1?'s':''})`;
-    } else {
-      setElementHidden(container, true);
+    const filters = getSegmentsFiltersMap();
+    const chipsEl = document.getElementById('segmentsActiveFilters');
+    if (chipsEl) {
+      chipsEl.innerHTML = '';
+      for (const [key, v] of filters.entries()) {
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'active-filter-chip';
+        chip.dataset.filterKey = key;
+        chip.title = 'Remove this filter';
+        chip.setAttribute('dir', 'auto');
+        const label = document.createElement('strong');
+        label.textContent = segmentsFilterColumnLabel(key);
+        chip.appendChild(label);
+        chip.appendChild(document.createTextNode(` ${describeSegmentsFilterValue(v)}`));
+        const x = document.createElement('span');
+        x.className = 'chip-x';
+        x.setAttribute('aria-hidden', 'true');
+        x.textContent = '×';
+        chip.appendChild(x);
+        chipsEl.appendChild(chip);
+      }
     }
-  }
-  // Tab switching
-  const tabBtns = document.querySelectorAll('.tab-btn');
-  const segmentsTab = document.getElementById('segmentsTab');
-  const linesTab = document.getElementById('linesTab');
-  
-  tabBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const targetTab = btn.dataset.tab;
-      tabBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      
-      setElementHidden(segmentsTab, targetTab !== 'segments');
-      setElementHidden(linesTab, targetTab !== 'lines');
-      updateDeepLink();
-    });
-  });
-
-  const loadingIndicator = document.getElementById('loadingIndicator');
-  const loadingMessage = document.getElementById('loadingMessage');
-
-  function setLoadingState(isLoading, message) {
-    if (loadingMessage && typeof message === 'string' && message) {
-      loadingMessage.textContent = message;
-    }
-    if (loadingIndicator) {
-      setElementHidden(loadingIndicator, !isLoading);
-    }
+    setElementHidden(container, filters.size === 0);
   }
 
   async function loadJSON(path) {
@@ -667,10 +738,11 @@
     return res.json();
   }
 
-  let chunks=[], tokens={}, tokens2={}, tokens3={}, plays=[], characters=[], tokensChar={}, tokensChar2={}, tokensChar3={}, allLines=[], characterNameFilterConfig=null;
-  setLoadingState(true, "Loading data...");
+  let chunks=[], tokens={}, tokens2={}, tokens3={}, plays=[], characters=[], tokensChar={}, tokensChar2={}, tokensChar3={}, allLines=[], characterNameFilterConfig=null, commentaryInterestConfig=null;
+  let allLinesLoadPromise = null;
   try {
-    [chunks, tokens, tokens2, tokens3, plays, characters, tokensChar, tokensChar2, tokensChar3, characterNameFilterConfig] = await Promise.all([
+    setLoadingState(true, 'Loading data...');
+    [chunks, tokens, tokens2, tokens3, plays, characters, tokensChar, tokensChar2, tokensChar3, characterNameFilterConfig, commentaryInterestConfig] = await Promise.all([
       loadJSON('data/chunks.json'),
       loadJSON('data/tokens.json'),
       loadJSON('data/tokens2.json'),
@@ -681,6 +753,7 @@
       loadJSON('data/tokens_char2.json'),
       loadJSON('data/tokens_char3.json'),
       loadJSON('data/character_name_filter_config.json').catch(() => null),
+      loadJSON('data/commentary_interest.json').catch(() => null),
     ]);
   } catch(e) {
     setLoadingState(true, 'Unable to load data. Please reload the page.');
@@ -688,35 +761,45 @@
     return;
   }
 
+  setLoadingState(false);
 
-  // Load line data
-  try {
-    setLoadingState(true, 'Loading paragraph text...');
-    allLines = await loadJSON('lines/all_lines.json');
-  } catch(e) {
-    console.warn('Segment data not available:', e);
-  } finally {
-    // FIX-loading-early-dismiss: clear overlay once data settles,
-    // so a downstream init throw does not leave the spinner frozen.
-    try { setLoadingState(false); } catch(_) {}
+  async function ensureAllLinesLoaded({ showOverlay = false } = {}) {
+    if (Array.isArray(allLines) && allLines.length > 0) return allLines;
+    const shouldShowOverlay = !!showOverlay;
+    if (shouldShowOverlay) setLoadingState(true, 'Loading paragraph text...');
+    if (!allLinesLoadPromise) {
+      allLinesLoadPromise = loadJSON('lines/all_lines.json')
+        .then(data => {
+          allLines = Array.isArray(data) ? data : [];
+          return allLines;
+        })
+        .catch(e => {
+          allLinesLoadPromise = null;
+          console.warn('Paragraph data not available:', e);
+          throw e;
+        });
+    }
+    try {
+      return await allLinesLoadPromise;
+    } finally {
+      if (shouldShowOverlay) setLoadingState(false);
+    }
+  }
+
+  function scheduleAllLinesPreload() {
+    const preload = () => {
+      ensureAllLinesLoaded().catch(() => {});
+    };
+    if (typeof window.requestIdleCallback === 'function') {
+      window.requestIdleCallback(preload, { timeout: 5000 });
+    } else {
+      window.setTimeout(preload, 2000);
+    }
   }
 
   const chunkById = new Map(chunks.map(r => [r.scene_id, r]));
   const playsById = new Map(plays.map(p => [p.play_id, p]));
   const charactersById = new Map(characters.map(c => [c.character_id, c]));
-
-  // Lines tab controller — loaded from js/lines-tab.js
-  if (typeof createLinesTabController === 'function') {
-    linesTabController = createLinesTabController({
-      getAllLines: () => allLines,
-      getPlaysById: () => playsById,
-      colorScaleState: colorScaleState,
-      showFilterPopover: showFilterPopover,
-      applyOrClear: applyOrClear,
-      updateDeepLink: updateDeepLink
-    });
-    linesTabController.init();
-  }
 
   // Name normalization util used elsewhere
 
@@ -724,78 +807,316 @@
 
   renderExtraTerms();
 
+  function getCommentatorConfig() {
+    const metadata = commentaryInterestConfig && commentaryInterestConfig.metadata;
+    const commentators = metadata && Array.isArray(metadata.commentators) ? metadata.commentators : [];
+    return commentators
+      .map(item => ({
+        key: String(item && item.key || '').trim(),
+        label: String(item && (item.label || item.name || item.key) || '').trim(),
+        referenceCount: Number(item && (item.reference_count ?? item.total_references ?? item.count)) || 0
+      }))
+      .filter(item => item.key && item.label)
+      .sort((a, b) => a.label.localeCompare(b.label) || a.key.localeCompare(b.key));
+  }
+  function getSelectedCommentatorKeys() {
+    const allowed = new Set(getCommentatorConfig().map(item => item.key));
+    return Array.from(selectedCommentatorColumns).filter(key => allowed.has(key));
+  }
+  function getSelectedCommentatorConfig() {
+    const byKey = new Map(getCommentatorConfig().map(item => [item.key, item]));
+    return getSelectedCommentatorKeys().map(key => byKey.get(key)).filter(Boolean);
+  }
+  function setSelectedCommentatorKeys(keys) {
+    const allowed = new Set(getCommentatorConfig().map(item => item.key));
+    selectedCommentatorColumns = new Set(
+      (keys || [])
+        .map(key => String(key || '').trim())
+        .filter(key => allowed.has(key))
+    );
+  }
+  function formatCommentatorReferenceCount(count) {
+    const n = Number(count) || 0;
+    return n.toLocaleString('en-US');
+  }
+  function decodeCommentatorsParam(raw) {
+    return String(raw || '')
+      .split(',')
+      .map(key => key.trim())
+      .filter(Boolean);
+  }
+  function addCommentatorColumn(key) {
+    const allowed = new Set(getCommentatorConfig().map(item => item.key));
+    if (!allowed.has(key) || selectedCommentatorColumns.has(key)) return false;
+    selectedCommentatorColumns.add(key);
+    commentatorColumnFilterText = '';
+    doSearch();
+    updateDeepLink();
+    return true;
+  }
+  function removeCommentatorColumn(key) {
+    if (!selectedCommentatorColumns.has(key)) return false;
+    selectedCommentatorColumns.delete(key);
+    const colKey = `commentary_${key}`;
+    getSegmentsFiltersMap().delete(colKey);
+    segmentsColumnOrder = segmentsColumnOrder.filter(item => item !== colKey);
+    doSearch();
+    updateDeepLink();
+    return true;
+  }
+  function getCommentaryFieldKeys(includeIndividuals = true) {
+    const keys = ['commentary_interest'];
+    if (includeIndividuals) {
+      const commentators = includeIndividuals === 'all'
+        ? getCommentatorConfig()
+        : getSelectedCommentatorConfig();
+      commentators.forEach(item => keys.push(`commentary_${item.key}`));
+    }
+    return keys;
+  }
+  function copyCommentaryFields(source, includeIndividuals = true) {
+    const out = {};
+    getCommentaryFieldKeys(includeIndividuals).forEach(key => {
+      const value = Number(source && source[key]);
+      out[key] = Number.isFinite(value) ? value : 0;
+    });
+    return out;
+  }
+  function addCommentaryFields(target, source, includeIndividuals = true) {
+    Object.assign(target, copyCommentaryFields(source, includeIndividuals));
+    return addCommentaryDensity(target);
+  }
+  function getVerseCountValue(row) {
+    const value = Number(row && (row.verse_count ?? row.num_lines));
+    return Number.isFinite(value) ? value : 0;
+  }
+  function addCommentaryDensity(target) {
+    const verseCount = getVerseCountValue(target);
+    const comments = Number(target && target.commentary_interest);
+    target.commentary_per_verse = verseCount > 0 && Number.isFinite(comments)
+      ? Math.round((comments / verseCount) * 100) / 100
+      : 0;
+    return target;
+  }
+  function getCommentaryColumns() {
+    // This corpus ships no commentary data; the machinery stays dormant.
+    if (!(commentaryInterestConfig && commentaryInterestConfig.metadata)) return [];
+    const cols = [
+      { key: 'commentary_interest', label: '# comments', type: 'number', defaultDir: 'desc' }
+    ];
+    getSelectedCommentatorConfig().forEach(item => {
+      cols.push({ key: `commentary_${item.key}`, label: item.label, type: 'number', defaultDir: 'desc', commentatorKey: item.key });
+    });
+    return cols;
+  }
+  function getVerseNormalizedCommentaryColumns() {
+    const cols = getCommentaryColumns();
+    if (!cols.length) return cols;
+    cols.splice(1, 0, { key: 'commentary_per_verse', label: 'Comments / paragraph', type: 'number', defaultDir: 'desc' });
+    return cols;
+  }
+
   // Precompute act/play totals (must be before applyStateFromURL which may call doSearch→denomFor)
   const actTotals = new Map();
   const chapterTotals = new Map();
   const playTotals = new Map();
+  const actVerseCounts = new Map();
+  const actChapterCounts = new Map();
+  const actChapterSeen = new Set();
+  const chapterVerseCounts = new Map();
+  const chapterCommentaryTotals = new Map();
+  const genreVerseCounts = new Map();
+  const actCommentaryTotals = new Map();
+  const genreCommentaryTotals = new Map();
   for (const r of chunks) {
     const k = `${r.play_id}:${r.act}`;
+    const verseCount = getVerseCountValue(r) || 1;
     const chapter = r.chapter || Math.floor((r.scene || 0) / 1000);
     const ck = `${r.play_id}:${r.act}:${chapter}`;
     actTotals.set(k, (actTotals.get(k)||0) + (r.total_words||0));
     chapterTotals.set(ck, (chapterTotals.get(ck)||0) + (r.total_words||0));
     playTotals.set(r.play_id, (playTotals.get(r.play_id)||0) + (r.total_words||0));
+    actVerseCounts.set(k, (actVerseCounts.get(k)||0) + verseCount);
+    if (!actChapterSeen.has(ck)) {
+      actChapterSeen.add(ck);
+      actChapterCounts.set(k, (actChapterCounts.get(k)||0) + 1);
+    }
+    chapterVerseCounts.set(ck, (chapterVerseCounts.get(ck)||0) + verseCount);
+    const chapterCommentary = chapterCommentaryTotals.get(ck) || copyCommentaryFields(null, 'all');
+    getCommentaryFieldKeys('all').forEach(key => {
+      chapterCommentary[key] = (chapterCommentary[key] || 0) + (Number(r[key]) || 0);
+    });
+    chapterCommentaryTotals.set(ck, chapterCommentary);
+    const actCommentary = actCommentaryTotals.get(k) || copyCommentaryFields(null, 'all');
+    getCommentaryFieldKeys('all').forEach(key => {
+      actCommentary[key] = (actCommentary[key] || 0) + (Number(r[key]) || 0);
+    });
+    actCommentaryTotals.set(k, actCommentary);
+    const genre = r.genre || 'unknown';
+    const genreCommentary = genreCommentaryTotals.get(genre) || copyCommentaryFields(null, 'all');
+    getCommentaryFieldKeys('all').forEach(key => {
+      genreCommentary[key] = (genreCommentary[key] || 0) + (Number(r[key]) || 0);
+    });
+    genreCommentaryTotals.set(genre, genreCommentary);
+    genreVerseCounts.set(genre, (genreVerseCounts.get(genre)||0) + verseCount);
+  }
+
+  // Aggregate the additive metric fields (sentence_count, char_count, rarity_sum)
+  // from paragraph chunks so metric columns can be derived at any granularity.
+  const chunkByCanonical = new Map(chunks.map(r => [r.canonical_id, r]));
+  const metricAggs = { act: new Map(), chapter: new Map(), play: new Map(), genre: new Map() };
+  function addMetricSums(map, k, r) {
+    let s = map.get(k);
+    if (!s) { s = { tw: 0, sc: 0, cc: 0, rs: 0, nc: 0, ac: 0, hc: 0 }; map.set(k, s); }
+    s.tw += r.total_words || 0; s.sc += r.sentence_count || 0;
+    s.cc += r.char_count || 0; s.rs += r.rarity_sum || 0;
+    s.nc += r.name_count || 0; s.ac += r.aramaic_count || 0; s.hc += r.hapax_count || 0;
+  }
+  for (const r of chunks) {
+    addMetricSums(metricAggs.act, `${r.play_id}:${r.act}`, r);
+    addMetricSums(metricAggs.chapter, `${r.play_id}:${r.act}:${r.chapter || Math.floor((r.scene || 0) / 1000)}`, r);
+    addMetricSums(metricAggs.play, r.play_id, r);
+    addMetricSums(metricAggs.genre, r.genre || 'unknown', r);
+  }
+  function metricSumsForRow(granVal, row) {
+    if (granVal === 'scene' || granVal === 'line') {
+      // paragraphs are both chunks and lines here; line rows share canonical_id
+      const m = granVal === 'scene' ? chunkById.get(row.scene_id) : chunkByCanonical.get(row.id);
+      return m ? { tw: m.total_words||0, sc: m.sentence_count||0, cc: m.char_count||0, rs: m.rarity_sum||0, nc: m.name_count||0, ac: m.aramaic_count||0, hc: m.hapax_count||0 } : null;
+    }
+    if (granVal === 'act') return metricAggs.act.get(`${row.play_id}:${row.act}`) || null;
+    if (granVal === 'chapter') return metricAggs.chapter.get(`${row.play_id}:${row.act}:${row.chapter}`) || null;
+    if (granVal === 'play') return metricAggs.play.get(row.play_id) || null;
+    if (granVal === 'genre') return metricAggs.genre.get(row.genre) || null;
+    return null;
+  }
+  function getEnabledMetricDefs(granVal) {
+    if (granVal === 'character') return [];
+    return METRIC_COL_DEFS.filter(d => enabledMetricCodes.includes(d.code)
+      && (!d.granOnly || d.granOnly.includes(granVal)));
+  }
+  function metricColsFor(granVal) {
+    return getEnabledMetricDefs(granVal).map(d => ({ key: d.key, label: d.label, type: 'number', tooltip: d.tooltip }));
+  }
+  function roundTo(v, dec) { const f = Math.pow(10, dec); return Math.round(v * f) / f; }
+  function attachMetricValues(rows, granVal) {
+    const defs = getEnabledMetricDefs(granVal);
+    if (!defs.length) return;
+    for (const row of rows) {
+      const s = metricSumsForRow(granVal, row);
+      for (const d of defs) {
+        let v = null;
+        if (d.key === 'mattr_50') {
+          const p = playsById.get(row.play_id);
+          v = (p && Number.isFinite(p.mattr_50)) ? p.mattr_50 : null;
+        } else if (s) {
+          if (d.key === 'words_per_sentence') v = s.sc > 0 ? roundTo(s.tw / s.sc, d.decimals) : null;
+          else if (d.key === 'mean_word_length') v = s.tw > 0 ? roundTo(s.cc / s.tw, d.decimals) : null;
+          else if (d.key === 'lexical_rarity') v = s.tw > 0 ? roundTo(s.rs / s.tw, d.decimals) : null;
+          else if (d.key === 'name_share') v = s.tw > 0 ? roundTo((s.nc / s.tw) * 100, d.decimals) : null;
+          else if (d.key === 'aramaic_share') v = s.tw > 0 ? roundTo((s.ac / s.tw) * 100, d.decimals) : null;
+          else if (d.key === 'hapax_share') v = s.tw > 0 ? roundTo((s.hc / s.tw) * 100, d.decimals) : null;
+        }
+        row[d.key] = v;
+      }
+    }
   }
 
   // Apply state from deep link if present
+  // Total application of URL params to app state: absent conditional params
+  // reset to their defaults, so history navigation (Back/Forward) restores
+  // any previously visited state exactly.
+  function applyUrlState(sp) {
+    try {
+      // Display
+      if (sp.has('cs')) colorScaleState.colorScaleEnabled = sp.get('cs') === '1';
+      // ignore palette and steps from URL to keep behavior consistent and URLs clean
+      if (sp.has('hl')) colorScaleState.highlightEnabled = sp.get('hl') === '1';
+      syncColorScaleToggles(); syncColorScaleOptions(); syncHighlightToggles();
+      // Segments
+      if (sp.has('q')) q.value = sp.get('q');
+      else if (sp.has('ts')) q.value = '';
+      if (sp.has('nm')) ngramMode.value = sp.get('nm');
+      if (sp.has('gran')) gran.value = normalizeGranularity(sp.get('gran'));
+      if (sp.has('mm')) matchMode.value = sp.get('mm');
+      if (sp.has('zr')) {
+        showZeroRows = sp.get('zr') === '1';
+        if (showZeroRowsToggle) showZeroRowsToggle.checked = showZeroRows;
+      }
+      if (sp.has('xn')) {
+        vocabExcludeNames = sp.get('xn') === '1';
+        const xnCheckbox = document.getElementById('vocabNamesCheckbox');
+        if (xnCheckbox) xnCheckbox.checked = vocabExcludeNames;
+      }
+      const metricCodes = sp.has('mc') ? sp.get('mc').split(',').map(s2 => s2.trim()) : [];
+      enabledMetricCodes = METRIC_COL_DEFS.map(d => d.code).filter(c => metricCodes.includes(c));
+      syncMetricToggles();
+      if (sp.has('commentators')) {
+        setSelectedCommentatorKeys(decodeCommentatorsParam(sp.get('commentators')));
+      } else {
+        setSelectedCommentatorKeys([]);
+      }
+      if (sp.has('ts')) {
+        setActiveTermsFromRestoredState(null, decodeTermSpecsParam(sp.get('ts')), true);
+      } else {
+        const restoredExtras = sp.has('qt') ? decodeExtrasParam(sp.get('qt')) : [];
+        setActiveTermsFromRestoredState(sp.has('q') ? q.value : '', restoredExtras, true);
+      }
+      sortKey = sp.has('sk') ? normalizeSegmentsColumnKey(sp.get('sk')) : null;
+      sortDir = sp.has('sd') ? sp.get('sd') : 'desc';
+      segmentsColumnOrder = sp.has('co')
+        ? sp.get('co').split(',').map(s => normalizeSegmentsColumnKey(s.trim())).filter(Boolean)
+        : [];
+      // Clear filters only for current granularity
+      getSegmentsFiltersMap().clear();
+      for (const [k, v] of sp.entries()) {
+        if (k.startsWith('s_fn_')) {
+          const key = normalizeSegmentsColumnKey(k.slice(5));
+          const [min, max] = (v || '').split('~');
+          getSegmentsFiltersMap().set(key, { type:'number', min, max });
+        } else if (k.startsWith('s_ft_')) {
+          const key = normalizeSegmentsColumnKey(k.slice(5));
+          getSegmentsFiltersMap().set(key, { type:'text', pattern: v || '' });
+        }
+      }
+    } catch(e) { /* apply what we can, still render */ }
+    updateSegmentsMatchModeUI();
+    doSearch();
+    applyColorScalesForVisibleTables();
+    // The commentary modal follows the cm param (no-op before its init)
+    const cmParam = sp.get('cm');
+    if (cmParam && typeof window.openCommentaryDetailFromParam === 'function') {
+      window.openCommentaryDetailFromParam(cmParam);
+    } else if (!cmParam
+      && typeof window.getCommentaryDetailParam === 'function' && window.getCommentaryDetailParam()
+      && typeof window.closeCommentaryDetail === 'function') {
+      window.closeCommentaryDetail();
+    }
+    updateDeepLink();
+  }
+
+  window.addEventListener('popstate', () => {
+    // Re-applying popped state must not create new history entries
+    historyReplaceOnlyUntil = Date.now() + 1500;
+    const sp = new URLSearchParams(location.search);
+    // The pristine entry (no params) is the default works view
+    if (!sp.has('gran')) sp.set('gran', granularityToURL('play'));
+    applyUrlState(sp);
+  });
+
   (function applyStateFromURL(){
     const sp = new URLSearchParams(location.search);
     // New readable params first
-    if (sp.has('tab') || sp.has('q') || sp.has('ts') || sp.has('l_q') || sp.has('co')) {
+    if (sp.has('tab') || sp.has('q') || sp.has('ts') || sp.has('l_q') || sp.has('gran') || sp.has('co') || sp.has('mc')) {
       appliedDeepLinkState = true;
-      try {
-        // Display
-        if (sp.has('cs')) colorScaleState.colorScaleEnabled = sp.get('cs') === '1';
-        // ignore palette and steps from URL to keep behavior consistent and URLs clean
-        if (sp.has('hl')) colorScaleState.highlightEnabled = sp.get('hl') === '1';
-        syncColorScaleToggles(); syncColorScaleOptions(); syncHighlightToggles();
-        // Tab (ignored; segments only)
-        // Segments
-        if (sp.has('q')) q.value = sp.get('q');
-        else if (sp.has('ts')) q.value = '';
-        if (sp.has('nm')) ngramMode.value = sp.get('nm');
-        if (sp.has('gran')) gran.value = sp.get('gran');
-        if (sp.has('mm')) matchMode.value = sp.get('mm');
-        if (sp.has('zr')) {
-          showZeroRows = sp.get('zr') === '1';
-          if (showZeroRowsToggle) showZeroRowsToggle.checked = showZeroRows;
-        }
-        if (sp.has('ts')) {
-          setActiveTermsFromRestoredState(null, decodeTermSpecsParam(sp.get('ts')), true);
-        } else {
-          const restoredExtras = sp.has('qt') ? decodeExtrasParam(sp.get('qt')) : [];
-          setActiveTermsFromRestoredState(sp.has('q') ? q.value : '', restoredExtras, true);
-        }
-        if (sp.has('sk')) sortKey = normalizeSegmentsColumnKey(sp.get('sk'));
-        if (sp.has('sd')) sortDir = sp.get('sd');
-        if (sp.has('co')) {
-          segmentsColumnOrder = sp.get('co').split(',').map(s => normalizeSegmentsColumnKey(s.trim())).filter(Boolean);
-        }
-        // Clear filters only for current granularity
-        getSegmentsFiltersMap().clear();
-        for (const [k, v] of sp.entries()) {
-          if (k.startsWith('s_fn_')) {
-            const key = normalizeSegmentsColumnKey(k.slice(5));
-            const [min, max] = (v || '').split('~');
-            getSegmentsFiltersMap().set(key, { type:'number', min, max });
-          } else if (k.startsWith('s_ft_')) {
-            const key = normalizeSegmentsColumnKey(k.slice(5));
-            getSegmentsFiltersMap().set(key, { type:'text', pattern: v || '' });
-          }
-        }
-      } catch(e) { /* continue to finally */ }
-        updateSegmentsMatchModeUI();
-        // Trigger render for segments regardless
-        doSearch();
-        applyColorScalesForVisibleTables();
-        updateDeepLink();
+      applyUrlState(sp);
       return;
     }
     // Legacy base64 fallback
     const enc = sp.get('state');
-    if (!enc) { updateDeepLink(); return; }
+    if (!enc) { return; }
     const st = decodeState(enc);
-    if (!st) { updateDeepLink(); return; }
+    if (!st) { return; }
     try {
       // Display
       if (st.display) {
@@ -805,20 +1126,18 @@
         if (typeof st.display.highlightEnabled === 'boolean') colorScaleState.highlightEnabled = st.display.highlightEnabled;
         syncColorScaleToggles(); syncColorScaleOptions(); syncHighlightToggles();
       }
-      // Tab
-      if (st.tab) {
-        const btn = document.querySelector(`.tab-btn[data-tab="${st.tab}"]`);
-        if (btn) btn.click();
-      }
       // Segments
       if (st.segments) {
       if (st.segments.q != null) q.value = st.segments.q;
       if (st.segments.ngramMode) ngramMode.value = st.segments.ngramMode;
-      if (st.segments.gran) gran.value = st.segments.gran;
+      if (st.segments.gran) gran.value = normalizeGranularity(st.segments.gran);
       if (st.segments.matchMode) matchMode.value = st.segments.matchMode;
       if (typeof st.segments.showZeroRows === 'boolean') {
         showZeroRows = st.segments.showZeroRows;
         if (showZeroRowsToggle) showZeroRowsToggle.checked = showZeroRows;
+      }
+      if (Array.isArray(st.segments.commentators)) {
+        setSelectedCommentatorKeys(st.segments.commentators);
       }
       if (Array.isArray(st.segments.extraTerms)) {
         extraTerms = st.segments.extraTerms.filter(Boolean);
@@ -833,27 +1152,9 @@
           for (const [k,v] of m.entries()) getSegmentsFiltersMap().set(normalizeSegmentsColumnKey(k), v);
         }
       }
-      // Lines
-      if (st.lines) {
-        const lq = document.getElementById('linesQuery');
-        if (st.lines.q != null) lq.value = st.lines.q;
-        const ln = document.getElementById('linesNgramMode');
-        if (st.lines.ngramMode) ln.value = st.lines.ngramMode;
-        const lm = document.getElementById('linesMatchMode');
-        if (st.lines.matchMode) lm.value = st.lines.matchMode;
-        if (linesTabController && (st.lines.sortKey || st.lines.sortDir)) {
-          linesTabController.setSortState(st.lines.sortKey, st.lines.sortDir);
-        }
-        if (linesTabController) linesTabController.replaceColumnFilters(new Map());
-        if (st.lines.filters) {
-          const m2 = arrayToMap(st.lines.filters);
-          if (linesTabController) linesTabController.replaceColumnFilters(m2);
-        }
-      }
       updateSegmentsMatchModeUI();
       // Trigger renders
       doSearch();
-      const lqv = document.getElementById('linesQuery').value.trim(); if (lqv) doLinesSearch();
       applyColorScalesForVisibleTables();
       appliedDeepLinkState = true;
     } catch(e) { /* ignore */ }
@@ -863,10 +1164,12 @@
   // No selectedPlayIds — include all plays; use header filters to refine
   function downloadSegmentsCsvAll(filename) {
     if (!segmentsAllRows || segmentsAllRows.length === 0) return;
-    const cols = Array.from(theadRow.children).map(th => ({
-      key: th.dataset.key,
-      label: (th.childNodes[0]?.textContent || th.textContent || '').replace('⚙','').trim()
-    }));
+    const cols = Array.from(theadRow.children)
+      .filter(th => th.dataset.key && th.dataset.key !== '__add')
+      .map(th => ({
+        key: th.dataset.key,
+        label: (th.childNodes[0]?.textContent || th.textContent || '').replace('⚙','').trim()
+      }));
     if (cols.length === 0) return;
     const rows = [cols.map(c => c.label)];
     for (const r of segmentsAllRows) {
@@ -881,11 +1184,6 @@
     }
     downloadCsv(filename, rows);
   }
-  function downloadLinesCsvAll(filename) {
-    if (!linesTabController) return;
-    linesTabController.downloadCsvAll(filename);
-  }
-
   // Simple debounce helper for responsive UI without spamming renders
 
 
@@ -904,7 +1202,7 @@
       th.dataset.label = c.label;
       th.dataset.key = c.key;
       th.dataset.type = c.type || 'text';
-      th.title = 'Click to sort';
+      th.title = c.tooltip ? `${c.tooltip} Click to sort.` : 'Click to sort';
       const labelSpan = document.createElement('span');
       labelSpan.className = 'th-label';
       labelSpan.textContent = c.label;
@@ -930,6 +1228,19 @@
         });
         th.appendChild(removeBtn);
       }
+      if (c.commentatorKey) {
+        const removeBtn = document.createElement('button');
+        removeBtn.type = 'button';
+        removeBtn.className = 'term-col-remove';
+        removeBtn.textContent = '×';
+        removeBtn.title = `Remove ${c.label}`;
+        removeBtn.setAttribute('aria-label', `Remove ${c.label}`);
+        removeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          removeCommentatorColumn(c.commentatorKey);
+        });
+        th.appendChild(removeBtn);
+      }
       // Add filter icon
       const icon = document.createElement('span');
       icon.className = 'filter-icon';
@@ -951,6 +1262,26 @@
       });
       theadRow.appendChild(th);
     });
+    // Commentator/metric columns are place-measures; they don't apply to
+    // vocabulary rows, so the column adder hides there.
+    if (!isVocabGranularity(gran.value)) {
+      const addTh = document.createElement('th');
+      addTh.className = 'add-column-th';
+      addTh.dataset.key = '__add';
+      addTh.title = 'Add columns: commentators and text metrics';
+      const addBtn = document.createElement('button');
+      addBtn.type = 'button';
+      addBtn.className = 'add-column-plus';
+      addBtn.textContent = '+';
+      addBtn.setAttribute('aria-label', 'Add columns');
+      addBtn.setAttribute('aria-haspopup', 'dialog');
+      addTh.appendChild(addBtn);
+      addTh.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (typeof window.showAddColumnPopover === 'function') window.showAddColumnPopover(addTh);
+      });
+      theadRow.appendChild(addTh);
+    }
     updateSortIndicators();
   }
   
@@ -1139,6 +1470,9 @@
 
   function buildRowsForTerms(terms, preferredSortTermIndex = null){
     const granVal = gran.value;
+    if (isVocabGranularity(granVal)) {
+      return buildVocabularyRows(granVal);
+    }
     const activeTerms = (terms || []).map(t => toTermSpec(t, matchMode.value)).filter(Boolean);
     const hasTerms = activeTerms.length > 0;
     const baseN = normalizeTermN(activeTerms[0] && activeTerms[0].n) || getSelectedNgramModeValue();
@@ -1202,6 +1536,7 @@
     }
     function finalizeRows() {
       const arr = Array.from(rowsMap.values());
+      attachMetricValues(arr, granVal);
       arr.forEach(r => {
         activeTerms.forEach((termSpec, idx) => {
           const tk = termKeys[idx];
@@ -1241,11 +1576,13 @@
 
     const genreTotals = new Map();
     const genrePlayCounts = new Map();
+    const genreChapterCounts = new Map();
     if (granVal === 'genre') {
       plays.forEach(play => {
         const g = play.genre || 'unknown';
         genreTotals.set(g, (genreTotals.get(g) || 0) + (play.total_words || 0));
         genrePlayCounts.set(g, (genrePlayCounts.get(g) || 0) + 1);
+        genreChapterCounts.set(g, (genreChapterCounts.get(g) || 0) + (play.num_acts || 0));
       });
     }
     if ((showZeroRows || !hasTerms) && granVal !== 'line') {
@@ -1256,7 +1593,7 @@
             const ngramCount = getRowNgramCount(totalWords);
             const playMeta = playsById.get(m.play_id) || { play_id: m.play_id, abbr: m.play_abbr, location: m.location };
             const parts = getSectionParts(m);
-            return { id: m.canonical_id, location: m.location || getSectionLocation(playMeta, m.act, parts.chapter, parts.section), play_title: m.play_title, genre:m.genre, play_id:m.play_id, act:m.act, chapter:parts.chapter, chapter_label:m.chapter_label || `Chapter ${parts.chapter}`, section:parts.section, scene:m.scene, total_words:totalWords, ngram_count:ngramCount, scene_id: m.scene_id, act_label: m.act_label, scene_label: m.scene_label };
+            return addCommentaryFields({ id: m.canonical_id, location: m.location || getSectionLocation(playMeta, m.act, parts.chapter, parts.section), play_title: m.play_title, genre:m.genre, play_id:m.play_id, act:m.act, chapter:parts.chapter, chapter_label:m.chapter_label || `Chapter ${parts.chapter}`, section:parts.section, scene:m.scene, total_words:totalWords, ngram_count:ngramCount, scene_id: m.scene_id, act_label: m.act_label, scene_label: m.scene_label }, m);
           });
         });
       } else if (granVal === 'act') {
@@ -1269,7 +1606,7 @@
           ensureRow(k, () => {
             const ngramCount = getRowNgramCount(total_words);
             const sample = chunks.find(m => m.play_id === pid && m.act === actNum);
-            return { id: `${play.abbr}.${actNum}`, location:getChapterLocation(play, actNum), play_title: play.title, genre:play.genre, play_id:pid, act:actNum, act_label:(sample && sample.act_label) || `Book ${actNum}`, total_words, ngram_count:ngramCount };
+            return addCommentaryFields({ id: `${play.abbr}.${actNum}`, location:getChapterLocation(play, actNum), play_title: play.title, genre:play.genre, play_id:pid, act:actNum, act_label:(sample && sample.act_label) || `Book ${actNum}`, num_chapters: actChapterCounts.get(k) || 0, verse_count: actVerseCounts.get(k) || 0, total_words, ngram_count:ngramCount }, actCommentaryTotals.get(k));
           });
         }
       } else if (granVal === 'chapter') {
@@ -1283,7 +1620,7 @@
           ensureRow(k, () => {
             const ngramCount = getRowNgramCount(total_words);
             const sample = chunks.find(m => m.play_id === pid && m.act === actNum && (m.chapter || Math.floor((m.scene || 0) / 1000)) === chapter);
-            return { id: `${play.abbr}.${actNum}.${chapter}`, location:`${getChapterLocation(play, actNum)}.${padLocationPart(chapter)}`, play_title: play.title, genre:play.genre, play_id:pid, act:actNum, act_label:(sample && sample.act_label) || `Book ${actNum}`, chapter, chapter_label:`Chapter ${chapter}`, total_words, ngram_count:ngramCount };
+            return addCommentaryFields({ id: `${play.abbr}.${actNum}.${chapter}`, location:`${getChapterLocation(play, actNum)}.${padLocationPart(chapter)}`, play_title: play.title, genre:play.genre, play_id:pid, act:actNum, act_label:(sample && sample.act_label) || `Book ${actNum}`, chapter, chapter_label:`Chapter ${chapter}`, verse_count: chapterVerseCounts.get(k) || 0, total_words, ngram_count:ngramCount }, chapterCommentaryTotals.get(k));
           });
         }
       } else if (granVal === 'play') {
@@ -1291,14 +1628,15 @@
           ensureRow(p.play_id, () => {
             const total_words = p.total_words ?? 0;
             const ngramCount = getRowNgramCount(total_words);
-            return { play_id:p.play_id, location:getBookLocation(p), title:p.title, genre:p.genre, num_chapters:p.num_acts ?? 0, num_lines:p.total_lines ?? 0, total_words, ngram_count:ngramCount };
+            const verseCount = p.verse_count ?? p.total_lines ?? p.num_lines ?? 0;
+            return addCommentaryFields({ play_id:p.play_id, location:getBookLocation(p), title:p.title, genre:p.genre, num_chapters:p.num_acts ?? 0, verse_count: verseCount, num_lines: verseCount, total_words, ngram_count:ngramCount }, p);
           });
         });
       } else if (granVal === 'genre') {
         for (const [genre, totalWords] of genreTotals.entries()) {
           ensureRow(genre, () => {
             const ngramCount = getRowNgramCount(totalWords);
-            return { genre, num_plays: genrePlayCounts.get(genre) || 0, total_words: totalWords, ngram_count:ngramCount };
+            return addCommentaryFields({ genre, num_plays: genrePlayCounts.get(genre) || 0, num_chapters: genreChapterCounts.get(genre) || 0, verse_count: genreVerseCounts.get(genre) || 0, total_words: totalWords, ngram_count:ngramCount }, genreCommentaryTotals.get(genre));
           });
         }
       } else if (granVal === 'character') {
@@ -1355,6 +1693,7 @@
           speaker: ln.speaker || '',
           line: clean
         };
+        addCommentaryFields(row, ln);
         const matchedNgrams = [];
         lineMatchers.forEach((m, idx) => {
           if (!m) return;
@@ -1381,6 +1720,8 @@
           row.line_highlight_regex = (matchedNgrams.length === 0 || matchedNgrams.length > 60)
             ? null
             : buildHighlightRegexFromNgrams(matchedNgrams);
+        }
+        if (hasTerm || !hasTerms || showZeroRows) {
           rowsMap.set(row.id, row);
         }
       }
@@ -1388,11 +1729,13 @@
       const baseCols = [
         { key: 'location', label: 'Location', defaultDir: 'asc', type: 'text' },
         { key: 'play_title', label: 'Work', defaultDir: 'asc', type: 'text' },
-        { key: 'act_label', label: 'Book', defaultDir: 'asc', type: 'text' },
-        { key: 'chapter', label: 'Chapter', type: 'number', defaultDir: 'asc' },
-        { key: 'section', label: 'Section', type: 'number', defaultDir: 'asc' }
+        { key: 'act', label: 'Book', type: 'number' },
+        { key: 'chapter', label: 'Chapter', type: 'number' },
+        { key: 'section', label: 'Section #', type: 'number' }
       ];
       const termCols = buildTermColumns();
+      baseCols.push(...getCommentaryColumns());
+      baseCols.push(...metricColsFor(granVal));
       baseCols.push(...termCols);
       baseCols.push({ key: 'line', label: 'Segment', type: 'text' });
       setHeaders(baseCols);
@@ -1406,11 +1749,12 @@
       const baseCols = [
         {key:'location', label:'Location', defaultDir:'asc', type:'text'},
         {key:'play_title', label:'Work', defaultDir:'asc', type:'text'},
-        {key:'act_label', label:'Book', defaultDir:'asc', type:'text'},
-        {key:'chapter', label:'Chapter', type:'number', defaultDir:'asc'},
-        {key:'section', label:'Section', type:'number', defaultDir:'asc'},
+        {key:'act', label:'Chapter', type:'number'},
+        {key:'scene', label:'Paragraph #', type:'number'},
+        ...getCommentaryColumns(),
         {key:'ngram_count', label: getBaseCountLabel(), type:'number'}
       ];
+      baseCols.push(...metricColsFor(granVal));
       activeTerms.forEach((term, termIdx) => {
         const postings = getPostingsForTerm(termIdx);
         for (const [scene_id, count] of postings){
@@ -1419,8 +1763,7 @@
             const totalWords = m.total_words || 0;
             const ngramCount = getRowNgramCount(totalWords);
             const playMeta = playsById.get(m.play_id) || { play_id: m.play_id, abbr: m.play_abbr, location: m.location };
-            const parts = getSectionParts(m);
-            return { id: m.canonical_id, location: m.location || getSectionLocation(playMeta, m.act, parts.chapter, parts.section), play_title: m.play_title, genre:m.genre, play_id:m.play_id, act:m.act, act_label:m.act_label, chapter:parts.chapter, chapter_label:m.chapter_label || `Chapter ${parts.chapter}`, section:parts.section, scene:m.scene, total_words:totalWords, ngram_count:ngramCount, scene_id };
+            return addCommentaryFields({ id: m.canonical_id, location: m.location || getVerseLocation(playMeta, m.act, m.scene), play_title: m.play_title, genre:m.genre, play_id:m.play_id, act:m.act, scene:m.scene, total_words:totalWords, ngram_count:ngramCount, scene_id }, m);
           });
           const d = denomFor(normalizeTermN(term.n) || 1,'scene',m);
           row[`${termKeys[termIdx]}_count`] = count;
@@ -1439,10 +1782,13 @@
       const baseCols = [
         {key:'location', label:'Location', defaultDir:'asc', type:'text'},
         {key:'play_title', label:'Work', defaultDir:'asc', type:'text'},
-        {key:'act_label', label:'Book', defaultDir:'asc', type:'text'},
+        {key:'act', label:'Book', type:'number'},
         {key:'chapter', label:'Chapter', type:'number', defaultDir:'asc'},
+        {key:'verse_count', label:'# segments', type:'number'},
+        ...getVerseNormalizedCommentaryColumns(),
         {key:'ngram_count', label: getBaseCountLabel(), type:'number'}
       ];
+      baseCols.push(...metricColsFor(granVal));
       activeTerms.forEach((term, termIdx) => {
         const postings = getPostingsForTerm(termIdx);
         const countsByChapter = new Map();
@@ -1463,7 +1809,7 @@
             const total_words = chapterTotals.get(k) || 0;
             const ngramCount = getRowNgramCount(total_words);
             const sample = chunks.find(m => m.play_id === pid && m.act === actNum && getSectionParts(m).chapter === chapter);
-            return { id: `${play.abbr}.${actNum}.${chapter}`, location:`${getChapterLocation(play, actNum)}.${padLocationPart(chapter)}`, play_title: play.title, genre:play.genre, play_id:pid, act:actNum, act_label:(sample && sample.act_label) || `Book ${actNum}`, chapter, chapter_label:`Chapter ${chapter}`, total_words, ngram_count:ngramCount };
+            return addCommentaryFields({ id: `${play.abbr}.${actNum}.${chapter}`, location:`${getChapterLocation(play, actNum)}.${padLocationPart(chapter)}`, play_title: play.title, genre:play.genre, play_id:pid, act:actNum, act_label:(sample && sample.act_label) || `Book ${actNum}`, chapter, chapter_label:`Chapter ${chapter}`, verse_count: chapterVerseCounts.get(k) || 0, total_words, ngram_count:ngramCount }, chapterCommentaryTotals.get(k));
           });
           const d = denomFor(normalizeTermN(term.n) || 1,'chapter',{play_id:pid,act:actNum,chapter});
           row[`${termKeys[termIdx]}_count`] = count;
@@ -1482,9 +1828,13 @@
       const baseCols = [
         {key:'location', label:'Location', defaultDir:'asc', type:'text'},
         {key:'play_title', label:'Work', defaultDir:'asc', type:'text'},
-        {key:'act_label', label:'Book', defaultDir:'asc', type:'text'},
+        {key:'act', label:'Book', type:'number'},
+        {key:'num_chapters', label:'# chapters', type:'number'},
+        {key:'verse_count', label:'# segments', type:'number'},
+        ...getVerseNormalizedCommentaryColumns(),
         {key:'ngram_count', label: getBaseCountLabel(), type:'number'}
       ];
+      baseCols.push(...metricColsFor(granVal));
       activeTerms.forEach((term, termIdx) => {
         const postings = getPostingsForTerm(termIdx);
         const countsByAct = new Map();
@@ -1503,7 +1853,7 @@
             const total_words = actTotals.get(k) || 0;
             const ngramCount = getRowNgramCount(total_words);
             const sample = chunks.find(m => m.play_id === pid && m.act === actNum);
-            return { id: `${play.abbr}.${actNum}`, location:getChapterLocation(play, actNum), play_title: play.title, genre:play.genre, play_id:pid, act:actNum, act_label:(sample && sample.act_label) || `Book ${actNum}`, total_words, ngram_count:ngramCount };
+            return addCommentaryFields({ id: `${play.abbr}.${actNum}`, location:getChapterLocation(play, actNum), play_title: play.title, genre:play.genre, play_id:pid, act:actNum, act_label:(sample && sample.act_label) || `Book ${actNum}`, num_chapters: actChapterCounts.get(k) || 0, verse_count: actVerseCounts.get(k) || 0, total_words, ngram_count:ngramCount }, actCommentaryTotals.get(k));
           });
           const d = denomFor(normalizeTermN(term.n) || 1,'act',{play_id:pid,act:actNum});
           row[`${termKeys[termIdx]}_count`] = count;
@@ -1524,9 +1874,11 @@
         {key:'title', label:'Work', defaultDir:'asc', type:'text'},
         {key:'genre', label:'Genre', defaultDir:'asc', type:'text'},
         {key:'num_chapters', label:'# books', type:'number'},
-        {key:'num_lines', label:'# sections', type:'number'},
+        {key:'verse_count', label:'# segments', type:'number'},
+        ...getVerseNormalizedCommentaryColumns(),
         {key:'ngram_count', label: getBaseCountLabel(), type:'number'}
       ];
+      baseCols.push(...metricColsFor(granVal));
       activeTerms.forEach((term, termIdx) => {
         const postings = getPostingsForTerm(termIdx);
         const countsByPlay = new Map();
@@ -1540,7 +1892,8 @@
           const row = ensureRow(pid, () => {
             const total_words = p.total_words ?? 0;
             const ngramCount = getRowNgramCount(total_words);
-            return { play_id:pid, location:getBookLocation(p), title:p.title, genre:p.genre, num_chapters:p.num_acts ?? 0, num_lines:p.total_lines ?? 0, total_words, ngram_count:ngramCount };
+            const verseCount = p.verse_count ?? p.total_lines ?? p.num_lines ?? 0;
+            return addCommentaryFields({ play_id:pid, location:getBookLocation(p), title:p.title, genre:p.genre, num_chapters:p.num_acts ?? 0, verse_count: verseCount, num_lines: verseCount, total_words, ngram_count:ngramCount }, p);
           });
           const d = denomFor(normalizeTermN(term.n) || 1,'play',{play_id:pid});
           row[`${termKeys[termIdx]}_count`] = count;
@@ -1561,8 +1914,12 @@
       const baseCols = [
         {key:'genre', label:'Genre', defaultDir:'asc', type:'text'},
         {key:'num_plays', label:'# works', type:'number'},
+        {key:'num_chapters', label:'# books', type:'number'},
+        {key:'verse_count', label:'# segments', type:'number'},
+        ...getVerseNormalizedCommentaryColumns(),
         {key:'ngram_count', label: getBaseCountLabel(), type:'number'}
       ];
+      baseCols.push(...metricColsFor(granVal));
       activeTerms.forEach((term, termIdx) => {
         const postings = getPostingsForTerm(termIdx);
         const countsByGenre = new Map();
@@ -1575,7 +1932,7 @@
           const totalWords = genreTotals.get(genre) || 0;
           const row = ensureRow(genre, () => {
             const ngramCount = getRowNgramCount(totalWords);
-            return { genre, num_plays: genrePlayCounts.get(genre) || 0, total_words: totalWords, ngram_count:ngramCount };
+            return addCommentaryFields({ genre, num_plays: genrePlayCounts.get(genre) || 0, num_chapters: genreChapterCounts.get(genre) || 0, verse_count: genreVerseCounts.get(genre) || 0, total_words: totalWords, ngram_count:ngramCount }, genreCommentaryTotals.get(genre));
           });
           const denom = denomFor(normalizeTermN(term.n) || 1, 'genre', { total_words: totalWords });
           row[`${termKeys[termIdx]}_count`] = count;
@@ -1629,6 +1986,10 @@
     const segFilters = getSegmentsFiltersMap();
     for (const [key, f] of segFilters.entries()) {
       if (!f) continue;
+      // At vocabulary granularities the location filter is a scope applied
+      // while building rows (they have no location field of their own)
+      if ((key === 'location' || key === 'genre') && isVocabGranularity(gran.value)) continue;
+      if (key === 'location' && gran.value === 'genre') continue;
       const type = f.type || 'text';
       if (type === 'number') {
         const hasMin = f.min != null && f.min !== '';
@@ -1646,6 +2007,19 @@
         });
       } else {
         if (!f.pattern) continue;
+        // Anchored location prefixes are subtree scopes: finer views show
+        // the scope's descendants, coarser views its containing rows (so
+        // zooming out never comes up empty).
+        if (key === 'location' && f.pattern.startsWith('^') && !f.pattern.endsWith('$')) {
+          const literal = f.pattern.slice(1).replace(/\\(.)/g, '$1');
+          if ('^' + escapeRegexText(literal) === f.pattern) {
+            out = out.filter(r => {
+              const loc = String(r[key] ?? '') + '.';
+              return loc.startsWith(literal) || literal.startsWith(loc);
+            });
+            continue;
+          }
+        }
         let re = null;
         try { re = new RegExp(f.pattern, 'i'); } catch(e) { re = null; }
         if (!re) continue;
@@ -1684,6 +2058,9 @@
     renderSegmentsPage();
   }
   function refreshSegmentsFromFilters() {
+    // Vocabulary rows are built under the location scope, so filter edits
+    // there need a rebuild rather than a re-filter of cached rows
+    if (isVocabGranularity(gran.value)) { doSearch(); return; }
     if (!lastSegmentsBaseRows || lastSegmentsBaseRows.length === 0) return;
     let rows = applySegmentsFilters(lastSegmentsBaseRows);
     if (rows.length === 0) {
@@ -1702,25 +2079,347 @@
   // Column filter popover — loaded from js/filter-popover.js
   if (typeof window.initFilterPopoverModule === 'function') {
     window.initFilterPopoverModule({
-      getStateMap: (table) => (table === 'lines'
-        ? (linesTabController ? linesTabController.getColumnFilters() : new Map())
-        : getSegmentsFiltersMap()),
-      applyTableFilters: (table) => {
-        if (table === 'lines') {
-          if (linesTabController) {
-            linesTabController.renderPage();
-            linesTabController.updateFilterActions();
-          }
-          updateDeepLink();
-        } else {
-          refreshSegmentsFromFilters();
-          updateSegmentsFilterActions();
-          updateDeepLink();
-        }
+      getStateMap: () => getSegmentsFiltersMap(),
+      applyTableFilters: () => {
+        refreshSegmentsFromFilters();
+        updateSegmentsFilterActions();
+        updateDeepLink();
       }
     });
   }
-  
+
+  // --- Drill-down links: every count is a door into the things it counts ---
+  // Locations here are book-rooted ("01.Gen.001.001") with no testament
+  // component, so testament scopes filter the genre column instead.
+  function drillLocationPrefix(granVal, row) {
+    if (granVal === 'genre') return '';
+    return row.location ? `${row.location}.` : '';
+  }
+
+  function drillRowLabel(granVal, row) {
+    if (granVal === 'act') return `${row.play_title || ''} book ${row.act ?? ''}`.trim();
+    if (granVal === 'chapter') return `${row.play_title || ''} ${row.act ?? ''}.${row.chapter ?? ''}`.trim();
+    return row.title || row.play_title || row.genre || '';
+  }
+
+  function getDrillSpec(granVal, key, row) {
+    if (!row) return null;
+    if (isVocabGranularity(granVal)) {
+      const count = Number(row[key]);
+      if (!Number.isFinite(count) || count <= 0 || !row.ngram) return null;
+      if (key === 'book_count') {
+        return { vocabNgram: row.ngram, target: 'play', keepScope: false, count, title: `Show the ${formatCellNumber(count)} works containing this ${DRILL_NOUNS[granVal].replace(/s$/, '')}` };
+      }
+      if (key === 'verse_count') {
+        return { vocabNgram: row.ngram, target: 'line', keepScope: true, count, title: `Show the ${formatCellNumber(count)} segments containing this ${DRILL_NOUNS[granVal].replace(/s$/, '')}` };
+      }
+      return null;
+    }
+    const prefix = drillLocationPrefix(granVal, row);
+    const genreScope = granVal === 'genre' ? String(row.genre || '') : '';
+    if (!prefix && !genreScope) return null;
+    const label = drillRowLabel(granVal, row);
+    if (TERM_COUNT_KEY_RE.test(key) && DRILL_TARGETS[granVal]) {
+      const count = Number(row[key]);
+      if (!Number.isFinite(count) || count <= 0) return null;
+      return { target: 'line', prefix, genreScope, termKey: key, count, title: `Show the matching segments in ${label}` };
+    }
+    // Word/bigram/trigram counts open the scoped vocabulary view
+    if (key === 'ngram_count' && (granVal === 'genre' || granVal === 'play' || granVal === 'act')) {
+      const count = Number(row[key]);
+      if (!Number.isFinite(count) || count <= 0) return null;
+      const target = vocabGranForN(getSelectedNgramModeValue());
+      return {
+        target,
+        prefix,
+        genreScope,
+        termKey: '',
+        count,
+        title: `Show the ${DRILL_NOUNS[target]} of ${label}`
+      };
+    }
+    const target = DRILL_TARGETS[granVal] && DRILL_TARGETS[granVal][key];
+    if (!target) return null;
+    const count = Number(row[key]);
+    if (!Number.isFinite(count) || count <= 0) return null;
+    return {
+      target,
+      prefix,
+      genreScope,
+      termKey: '',
+      count,
+      title: `Show the ${formatCellNumber(count)} ${DRILL_NOUNS[target]} of ${label}`
+    };
+  }
+
+  // Ancestor-name cells filter the current granularity to that ancestor:
+  // Genre in the works view, Work in the chapters/paragraphs views, Chapter
+  // in the paragraphs view. Identity cells stay plain.
+  function getAncestorDrillSpec(granVal, key, row) {
+    if (!row) return null;
+    if (granVal === 'play' && key === 'genre' && row.genre) {
+      return { target: 'play', prefix: '', genreScope: String(row.genre), termKey: '', text: String(row.genre), title: `Show the works of ${row.genre}` };
+    }
+    const locParts = String(row.location || '').split('.');
+    if ((granVal === 'act' || granVal === 'chapter' || granVal === 'line') && key === 'play_title' && row.play_title && locParts.length >= 2) {
+      const prefix = locParts.slice(0, 1).join('.') + '.';
+      return {
+        target: granVal,
+        prefix,
+        termKey: '',
+        text: String(row.play_title),
+        title: `Show the ${DRILL_NOUNS[granVal]} of ${row.play_title}`
+      };
+    }
+    if ((granVal === 'chapter' || granVal === 'line') && key === 'act' && row.act != null && locParts.length >= 3) {
+      const prefix = locParts.slice(0, 2).join('.') + '.';
+      return {
+        target: granVal,
+        prefix,
+        termKey: '',
+        text: String(row.act),
+        title: `Show the ${DRILL_NOUNS[granVal]} of book ${row.act}`
+      };
+    }
+    if (granVal === 'line' && key === 'chapter' && row.chapter != null && locParts.length >= 4) {
+      const prefix = locParts.slice(0, 3).join('.') + '.';
+      return {
+        target: 'line',
+        prefix,
+        termKey: '',
+        text: String(row.chapter),
+        title: `Show the segments of chapter ${row.chapter}`
+      };
+    }
+    return null;
+  }
+
+  function getAnyDrillSpec(granVal, key, row) {
+    return getDrillSpec(granVal, key, row) || getAncestorDrillSpec(granVal, key, row);
+  }
+
+  function drillTo(spec) {
+    gran.value = spec.target;
+    const filters = getSegmentsFiltersMap();
+    if (spec.genreScope) {
+      filters.delete('location');
+      filters.set('genre', { type: 'text', pattern: '^' + escapeRegexText(spec.genreScope) + '$' });
+    } else {
+      filters.delete('genre');
+      filters.set('location', { type: 'text', pattern: '^' + escapeRegexText(spec.prefix) });
+    }
+    if (spec.termKey) {
+      for (const key of Array.from(filters.keys())) {
+        if (TERM_COUNT_KEY_RE.test(key)) filters.delete(key);
+      }
+      filters.set(spec.termKey, { type: 'number', min: 1 });
+    }
+    doSearch();
+  }
+
+  // From a vocabulary row into the location dimension: add the n-gram as a
+  // term column and require at least one hit of it in the target view.
+  function drillVocabNgram(spec) {
+    const vocabFilters = getSegmentsFiltersMap();
+    const scopeFilter = vocabFilters.get('location');
+    const genreFilter = vocabFilters.get('genre');
+    const termSpec = toTermSpec(spec.vocabNgram, 'exact');
+    if (!termSpec || !termSpec.n) return;
+    termSpec.display = 'count';
+    const specKey = termSpecKey(termSpec);
+    if (!getActiveTerms().some(t => termSpecKey(t, matchMode.value) === specKey)) {
+      extraTerms.push(termSpec);
+      renderExtraTerms();
+    }
+    const termIdx = getActiveTerms().findIndex(t => termSpecKey(t, matchMode.value) === specKey);
+    if (termIdx < 0) return;
+    gran.value = spec.target;
+    const filters = getSegmentsFiltersMap();
+    // The target view shows exactly what the count promised: carry the
+    // vocabulary scope when asked to, and clear any stale scope otherwise.
+    if (spec.keepScope && scopeFilter) filters.set('location', { ...scopeFilter });
+    else filters.delete('location');
+    if (spec.keepScope && genreFilter) filters.set('genre', { ...genreFilter });
+    else filters.delete('genre');
+    for (const key of Array.from(filters.keys())) {
+      if (TERM_COUNT_KEY_RE.test(key)) filters.delete(key);
+    }
+    filters.set(`t${termIdx}_count`, { type: 'number', min: 1 });
+    doSearch();
+  }
+
+  function buildDrillLink(spec) {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'drill-link';
+    btn.textContent = spec.text != null ? spec.text : formatCellNumber(spec.count);
+    btn.title = spec.title;
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (spec.vocabNgram) drillVocabNgram(spec);
+      else drillTo(spec);
+    });
+    return btn;
+  }
+
+  // --- Vocabulary granularities: rows are distinct n-grams -----------------
+
+  // The proper-name list is editable when the scope resolves to exactly one
+  // book (edits are stored per book, as the exclusion lists are).
+  function vocabScopeSinglePlay() {
+    if (!isVocabGranularity(gran.value)) return null;
+    const f = getSegmentsFiltersMap().get('location');
+    if (!f || f.type !== 'text' || !f.pattern || !f.pattern.startsWith('^')) return null;
+    const literal = f.pattern.slice(1).replace(/\\(.)/g, '$1');
+    if ('^' + escapeRegexText(literal) !== f.pattern) return null;
+    const matches = plays.filter(p => {
+      const loc = String(p.location || '') + '.';
+      return loc === literal || literal.startsWith(loc) || loc.startsWith(literal);
+    });
+    return matches.length === 1 ? matches[0] : null;
+  }
+
+  function nameFilterDataAvailable() {
+    // characters.json here holds per-book aggregates, not proper names
+    const cfg = characterNameFilterConfig || {};
+    if ((cfg.global_additions || []).length) return true;
+    return Object.values(cfg.play_additions || {}).some(list => (list || []).length > 0);
+  }
+
+  function renderNameFilterEditor() {
+    const container = document.getElementById('nameFilterEditor');
+    if (!container) return;
+    const play = (isVocabGranularity(gran.value) && nameFilterDataAvailable()) ? vocabScopeSinglePlay() : null;
+    if (!play || !window.nameFilterEditor) {
+      container.innerHTML = '';
+      setElementHidden(container, true);
+      return;
+    }
+    const info = window.nameFilterEditor.listForPlay(play.play_id);
+    const chips = info.terms.length
+      ? info.terms.map(term => (
+        `<button type="button" class="excluded-term-chip" data-term="${escapeHTML(term)}" dir="auto"` +
+        ` title="Stop hiding this term">${escapeHTML(term)}<span class="chip-x" aria-hidden="true">×</span></button>`
+      )).join('')
+      : '<span class="muted">No hidden terms.</span>';
+    const resetBtn = info.hasOverrides
+      ? '<button type="button" class="link-btn excluded-terms-reset">Reset to defaults</button>'
+      : '';
+    container.innerHTML = `
+      <details class="excluded-terms-details"${nameEditorOpen ? ' open' : ''}>
+        <summary>${info.total.toLocaleString('en-US')} proper-name terms for ${escapeHTML(play.title || play.abbr)}</summary>
+        <div class="excluded-terms-hint muted">Applied by the “Hide proper names” toggle above. Click a term to stop hiding it, or use the × on any row to hide more. Edits are saved in this browser.</div>
+        <div class="excluded-terms-chips">${chips}</div>
+        <div class="excluded-terms-edit">
+          <input type="text" class="excluded-terms-input" dir="auto" placeholder="Term to hide (1–3 words)">
+          <button type="button" class="link-btn excluded-terms-add">Hide term</button>
+          ${resetBtn}
+        </div>
+      </details>
+    `;
+    setElementHidden(container, false);
+  }
+
+  function vocabIndexForN(n) {
+    return n === 2 ? tokens2 : n === 3 ? tokens3 : tokens;
+  }
+
+  function vocabColumnLabel(granVal) {
+    return granVal === 'bigram' ? 'Bigram' : granVal === 'trigram' ? 'Trigram' : 'Word';
+  }
+
+  function buildVocabularyRows(granVal) {
+    const n = vocabNFor(granVal);
+    const filters = getSegmentsFiltersMap();
+    const scopeFilter = filters.get('location');
+    let scopeRe = null;
+    if (scopeFilter && scopeFilter.type === 'text' && scopeFilter.pattern) {
+      try { scopeRe = new RegExp(scopeFilter.pattern, 'i'); } catch (_) { scopeRe = null; }
+    }
+    const genreFilter = filters.get('genre');
+    let genreRe = null;
+    if (genreFilter && genreFilter.type === 'text' && genreFilter.pattern) {
+      try { genreRe = new RegExp(genreFilter.pattern, 'i'); } catch (_) { genreRe = null; }
+    }
+    const nameFilterVersion = window.__nameFilterVersion || 0;
+    const cacheKey = `${n}|${scopeRe ? scopeRe.source : ''}|${genreRe ? genreRe.source : ''}|${vocabExcludeNames ? 1 : 0}|${nameFilterVersion}`;
+    let rows = vocabRowsCache.get(cacheKey);
+    if (!rows) {
+      const index = vocabIndexForN(n);
+      const totalBooks = plays.length || 14;
+      const scopePlayIds = new Set();
+      const raw = [];
+      for (const [ngram, postings] of Object.entries(index)) {
+        if (!Array.isArray(postings) || !postings.length) continue;
+        let tf = 0;
+        let verses = 0;
+        const bookSet = new Set();
+        for (const posting of postings) {
+          const chunk = chunkById.get(posting[0]);
+          if (!chunk) continue;
+          bookSet.add(chunk.play_id);
+          if ((!scopeRe || scopeRe.test(String(chunk.location || '')))
+            && (!genreRe || genreRe.test(String(chunk.genre || '')))) {
+            tf += Number(posting[1]) || 0;
+            verses += 1;
+            scopePlayIds.add(chunk.play_id);
+          }
+        }
+        if (tf <= 0) continue;
+        const df = bookSet.size || 1;
+        // Sublinear term frequency: with only 14 documents, idf spans just
+        // 0–2.4, so a raw count would swamp rarity (a near-ubiquitous word
+        // missing from one work outscored genuinely concentrated words).
+        raw.push({
+          ngram,
+          count: tf,
+          verse_count: verses,
+          book_count: df,
+          tfidf: Math.round((1 + Math.log(tf)) * Math.log(totalBooks / df) * 10000) / 10000
+        });
+      }
+      rows = raw;
+      if (vocabExcludeNames && typeof window.ngramContainsConfiguredName === 'function') {
+        const playIds = scopeRe ? Array.from(scopePlayIds) : plays.map(p => p.play_id);
+        rows = raw.filter(r => !playIds.some(pid => window.ngramContainsConfiguredName(r.ngram, pid)));
+      }
+      // Flag proper-name rows when a single book is in scope so the renderer
+      // can dim them and offer per-row hide/unhide
+      const editablePlay = vocabScopeSinglePlay();
+      if (editablePlay && typeof window.ngramContainsConfiguredName === 'function') {
+        for (const row of rows) {
+          row.name_hit = window.ngramContainsConfiguredName(row.ngram, editablePlay.play_id);
+        }
+      }
+      // Express unusualness as a midrank percentile of TF-IDF within this
+      // view's vocabulary — stable across scopes, honest about ties.
+      const sortedScores = rows.map(r => r.tfidf).sort((a, b) => a - b);
+      const percentileByScore = new Map();
+      for (let i = 0; i < sortedScores.length;) {
+        let j = i;
+        while (j + 1 < sortedScores.length && sortedScores[j + 1] === sortedScores[i]) j++;
+        percentileByScore.set(sortedScores[i], Math.round(((i + j + 1) / 2 / sortedScores.length) * 1000) / 10);
+        i = j + 1;
+      }
+      for (const row of rows) row.unusualness = percentileByScore.get(row.tfidf) || 0;
+      vocabRowsCache.set(cacheKey, rows);
+      if (vocabRowsCache.size > 12) vocabRowsCache.delete(vocabRowsCache.keys().next().value);
+    }
+    const cols = [
+      { key: 'ngram', label: vocabColumnLabel(granVal), defaultDir: 'asc', type: 'text' },
+      { key: 'count', label: 'Count', type: 'number', defaultDir: 'desc' },
+      { key: 'book_count', label: '# works', type: 'number', defaultDir: 'desc' },
+      { key: 'verse_count', label: '# segments', type: 'number', defaultDir: 'desc' },
+      {
+        key: 'unusualness', label: 'Distinctiveness', type: 'number', defaultDir: 'desc',
+        tooltip: 'Percentile of TF-IDF ((1 + ln count within the current scope) × ln(14 / works containing the term)) among this view’s vocabulary: 99 means more distinctive here than 99% of terms. Ubiquitous terms land near 0.'
+      }
+    ];
+    setHeaders(cols);
+    ensureSegmentsSortForColumns(segmentsColumnDefs, 'count', 'desc');
+    return rows.slice();
+  }
+
   function renderSegmentsPage() {
     const totalPages = getTotalPages(segmentsAllRows.length, segmentsPageSize);
     const paginatedRows = paginateArray(segmentsAllRows, segmentsCurrentPage, segmentsPageSize);
@@ -1732,14 +2431,28 @@
       label: getHeaderLabelText(th)
     }));
     const cols = colDefs.map((c) => c.key);
+    const colTypeByKey = new Map(colDefs.map((c) => [c.key, c.type]));
     const numericRankIndex = buildNumericRankIndex(segmentsAllRows, colDefs);
     const granVal = gran.value;
+    const vocabToggle = document.getElementById('vocabNamesToggle');
+    if (vocabToggle) setElementHidden(vocabToggle, !isVocabGranularity(granVal) || !nameFilterDataAvailable());
+    const vocabEditablePlay = isVocabGranularity(granVal) ? vocabScopeSinglePlay() : null;
+    renderNameFilterEditor();
 
     for (const r of paginatedRows) {
       const tr = document.createElement('tr');
       cols.forEach((k) => {
         const td = document.createElement('td');
-        if (k === 'act' && r.act_label) {
+        if (k === '__add') {
+          td.className = 'add-column-cell';
+          tr.appendChild(td);
+          return;
+        }
+        if (k === 'act' && r.act_label && getAnyDrillSpec(granVal, k, r)) {
+          // Labeled Book/Story cells keep their ancestor-filter door
+          const spec = getAnyDrillSpec(granVal, k, r);
+          td.appendChild(buildDrillLink({ ...spec, text: String(r.act_label) }));
+        } else if (k === 'act' && r.act_label) {
           td.textContent = r.act_label;
         } else if (k === 'scene' && r.scene_label) {
           td.textContent = r.scene_label;
@@ -1749,6 +2462,40 @@
           td.innerHTML = (colorScaleState.highlightEnabled && r.line_highlight_regex)
             ? highlightHTML(r.line, r.line_highlight_regex)
             : escapeHTML(r.line);
+        } else if (typeof isCommentaryDetailCell === 'function' && isCommentaryDetailCell(k)) {
+          const v = r[k];
+          if (Number(v) > 0 && typeof buildCommentaryDetailLink === 'function') {
+            td.appendChild(buildCommentaryDetailLink(v, r, granVal, k));
+          } else {
+            td.textContent = (v === undefined || v === null) ? '' : v;
+          }
+        } else if (getAnyDrillSpec(granVal, k, r)) {
+          const spec = getAnyDrillSpec(granVal, k, r);
+          td.appendChild(buildDrillLink(spec));
+          if (spec.count != null) td.dataset.value = String(spec.count);
+        } else if (k === 'ngram') {
+          const span = document.createElement('span');
+          span.setAttribute('dir', 'auto');
+          span.textContent = r.ngram;
+          td.appendChild(span);
+          if (vocabEditablePlay && window.nameFilterEditor) {
+            const hideBtn = document.createElement('button');
+            hideBtn.type = 'button';
+            hideBtn.className = 'ngram-exclude-btn';
+            if (r.name_hit) {
+              hideBtn.textContent = '+';
+              hideBtn.title = 'Stop hiding this term';
+            } else {
+              hideBtn.textContent = '×';
+              hideBtn.title = `Hide this term for ${vocabEditablePlay.title || vocabEditablePlay.abbr}`;
+            }
+            hideBtn.addEventListener('click', (ev) => {
+              ev.stopPropagation();
+              if (r.name_hit) window.nameFilterEditor.include(vocabEditablePlay.play_id, r.ngram);
+              else window.nameFilterEditor.exclude(vocabEditablePlay.play_id, r.ngram);
+            });
+            td.appendChild(hideBtn);
+          }
         } else if (typeof isCharacterDetailCell === 'function' && isCharacterDetailCell(granVal, k, r)) {
           const v = r[k];
           if (v !== undefined && v !== null && r.character_id != null) {
@@ -1756,17 +2503,17 @@
           } else {
             td.textContent = (v === undefined || v === null) ? '' : v;
           }
-        } else if (typeof isPlayDetailCell === 'function' && isPlayDetailCell(granVal, k, r)) {
+        } else {
           const v = r[k];
-          if (v !== undefined && v !== null && r.play_id != null) {
-            td.appendChild(buildPlayDetailLink(v, r.play_id));
+          if (colTypeByKey.get(k) === 'number' && v !== undefined && v !== null && Number.isFinite(Number(v))) {
+            // Years read as plain numbers, not locale-formatted quantities
+            td.textContent = k === 'first_performance_year' ? String(v) : formatCellNumber(v);
+            td.dataset.value = String(v);
           } else {
             td.textContent = (v === undefined || v === null) ? '' : v;
           }
-        } else {
-          const v = r[k];
-          td.textContent = (v === undefined || v === null) ? '' : v;
         }
+        if (k === 'title' || k === 'play_title') td.classList.add('book-cell');
         const rankHint = getNumericRankHint(numericRankIndex, k, r[k]);
         if (rankHint) {
           td.classList.add('ranked-cell');
@@ -1776,6 +2523,7 @@
         }
         tr.appendChild(td);
       });
+      if (isVocabGranularity(granVal) && r.name_hit && !vocabExcludeNames) tr.classList.add('pd-name-excluded');
       tbody.appendChild(tr);
     }
 
@@ -1824,12 +2572,90 @@
     });
   }
 
+  const vocabNamesCheckbox = document.getElementById('vocabNamesCheckbox');
+  if (vocabNamesCheckbox) {
+    vocabNamesCheckbox.addEventListener('change', () => {
+      vocabExcludeNames = !!vocabNamesCheckbox.checked;
+      doSearch();
+    });
+  }
+
+  const nameFilterEditorEl = document.getElementById('nameFilterEditor');
+  if (nameFilterEditorEl) {
+    nameFilterEditorEl.addEventListener('toggle', (e) => {
+      if (e.target.classList && e.target.classList.contains('excluded-terms-details')) {
+        nameEditorOpen = !!e.target.open;
+      }
+    }, true);
+    nameFilterEditorEl.addEventListener('click', (e) => {
+      const play = vocabScopeSinglePlay();
+      if (!play || !window.nameFilterEditor) return;
+      const chip = e.target.closest('.excluded-term-chip');
+      if (chip) {
+        window.nameFilterEditor.include(play.play_id, chip.dataset.term || '');
+        return;
+      }
+      if (e.target.closest('.excluded-terms-add')) {
+        const input = nameFilterEditorEl.querySelector('.excluded-terms-input');
+        if (input && input.value.trim()) window.nameFilterEditor.exclude(play.play_id, input.value);
+        return;
+      }
+      if (e.target.closest('.excluded-terms-reset')) {
+        window.nameFilterEditor.reset(play.play_id);
+      }
+    });
+    nameFilterEditorEl.addEventListener('keydown', (e) => {
+      if (e.key !== 'Enter') return;
+      const input = e.target.closest('.excluded-terms-input');
+      if (!input) return;
+      e.preventDefault();
+      const play = vocabScopeSinglePlay();
+      if (play && window.nameFilterEditor && input.value.trim()) {
+        window.nameFilterEditor.exclude(play.play_id, input.value);
+      }
+    });
+  }
+
+  // Remove a single filter via its chip
+  const activeFilterChipsEl = document.getElementById('segmentsActiveFilters');
+  if (activeFilterChipsEl) {
+    activeFilterChipsEl.addEventListener('click', (e) => {
+      const chip = e.target.closest('.active-filter-chip');
+      if (!chip || !chip.dataset.filterKey) return;
+      getSegmentsFiltersMap().delete(chip.dataset.filterKey);
+      refreshSegmentsFromFilters();
+      updateSegmentsFilterActions();
+      updateDeepLink();
+    });
+  }
+
   // Update deep link initially
   updateDeepLink();
   
-  function doSearch(preferredSortTermIndex = null){
+  function showSegmentsTableMessage(message, className = 'muted') {
+    const colSpan = Math.max(1, theadRow.children.length || 8);
+    tbody.innerHTML = `<tr><td colspan="${colSpan}" class="${className}">${escapeHTML(message)}</td></tr>`;
+    setElementHidden(document.getElementById('segmentsPagination'), true);
+    updateSegmentsFilterActions();
+  }
+
+  async function doSearch(preferredSortTermIndex = null){
+    const requestId = ++segmentsSearchRequestId;
+    lastGranValue = gran.value;
     pruneExtraTermsAgainstPrimary();
     renderExtraTerms();
+    if (gran.value === 'line' && (!Array.isArray(allLines) || allLines.length === 0)) {
+      showSegmentsTableMessage('Loading paragraph text...');
+      try {
+        await ensureAllLinesLoaded({ showOverlay: true });
+      } catch (e) {
+        if (requestId === segmentsSearchRequestId) {
+          showSegmentsTableMessage('Paragraph data not available.', 'warning');
+        }
+        return;
+      }
+      if (requestId !== segmentsSearchRequestId) return;
+    }
     const terms = getActiveTerms();
     const rows = buildRowsForTerms(terms, preferredSortTermIndex);
     if (rows !== null) {
@@ -1841,6 +2667,10 @@
     if (e.key === 'Enter') {
       e.preventDefault();
       clearAddColumnPrompt(true);
+      if (isVocabGranularity(gran.value)) {
+        applyVocabNgramFilter();
+        return;
+      }
       const added = addExtraTerm(q.value);
       if (added) q.value = '';
     }
@@ -1872,7 +2702,7 @@
     renderSegmentsPage();
   });
   document.getElementById('segmentsPageSize').addEventListener('change', (e) => {
-    segmentsPageSize = parseInt(e.target.value);
+    segmentsPageSize = parseInt(e.target.value, 10);
     segmentsCurrentPage = 1;
     renderSegmentsPage();
   });
@@ -1889,9 +2719,26 @@
     if (val.trim()) scheduleAddColumnPrompt();
     else clearAddColumnPrompt(true);
   });
+  // At vocabulary granularities the rows ARE terms, so the search box
+  // filters the n-gram column instead of creating term columns.
+  function applyVocabNgramFilter() {
+    const text = q.value.trim();
+    if (!text) return false;
+    const normalized = normalizeTerm(text);
+    const pattern = matchMode.value === 'regex' ? normalized : escapeRegexText(normalized);
+    getSegmentsFiltersMap().set('ngram', { type: 'text', pattern });
+    clearTermWarning();
+    q.value = '';
+    doSearch();
+    return true;
+  }
   if (addColumnBtn) {
     addColumnBtn.addEventListener('click', () => {
       clearAddColumnPrompt(true);
+      if (isVocabGranularity(gran.value)) {
+        if (applyVocabNgramFilter()) q.focus();
+        return;
+      }
       const added = addExtraTerm(q.value);
       if (added) {
         q.value = '';
@@ -1900,7 +2747,10 @@
     });
   }
   ngramMode.addEventListener('change', doSearch);
-  gran.addEventListener('change', doSearch);
+  gran.addEventListener('change', () => {
+    carryScopeFilters(lastGranValue);
+    doSearch();
+  });
   matchMode.addEventListener('change', () => {
     clearTermWarning();
     updateSegmentsMatchModeUI();
@@ -1917,6 +2767,13 @@
       doSearch();
     });
   }
+  // Metric column toggles
+  metricToggles.forEach(cb => {
+    cb.addEventListener('change', () => {
+      enabledMetricCodes = metricToggles.filter(c => c.checked).map(c => c.dataset.metric);
+      doSearch();
+    });
+  });
   // Palette and steps options
   document.querySelectorAll('.color-scale-palette').forEach(sel => {
     sel.addEventListener('change', e => { colorScaleState.colorScalePalette = e.target.value; syncColorScaleOptions(); applyColorScalesForVisibleTables(); updateDeepLink(); });
@@ -1929,18 +2786,25 @@
   syncColorScaleOptions();
   renderAllLegends();
   if (showZeroRowsToggle) showZeroRowsToggle.checked = showZeroRows;
+  syncMetricToggles();
   updateSegmentsMatchModeUI();
   // Highlight toggle handlers
   document.querySelectorAll('.highlight-toggle').forEach(cb => {
     cb.addEventListener('change', (e) => {
       setHighlightEnabled(e.target.checked);
-      if (linesTabController && typeof linesTabController.renderPage === 'function') {
-        linesTabController.renderPage();
-      }
       updateDeepLink();
     });
   });
   syncHighlightToggles();
+
+
+  const addColumnsMobileBtn = document.getElementById('addColumnsMobile');
+  if (addColumnsMobileBtn) {
+    addColumnsMobileBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (typeof window.showAddColumnPopover === 'function') window.showAddColumnPopover(addColumnsMobileBtn);
+    });
+  }
 
   const downloadSegBtn = document.getElementById('downloadSegmentsCsv');
   if (downloadSegBtn) {
@@ -1950,28 +2814,15 @@
     });
   }
 
-  // Lines tab controller wrapper (module in docs/js/lines-tab.js)
-  function doLinesSearch() {
-    if (!linesTabController) return;
-    linesTabController.doSearch();
-  }
-
   // initial state for contexts tab (only if no deep link state applied)
   if (!appliedDeepLinkState) {
     gran.value = 'play';
     doSearch();
   }
+  // Startup state is settled; the address bar may now mirror state changes
+  historySyncEnabled = true;
+  scheduleAllLinesPreload();
 
-  // Local testing override: force a tab open without affecting normal defaults/deep links
-  (function applyShowTabOverride() {
-    const sp = new URLSearchParams(location.search);
-    const forcedTab = (sp.get('showtab') || '').trim();
-    if (!forcedTab) return;
-    if (forcedTab !== 'segments' && forcedTab !== 'lines') return;
-    const btn = document.querySelector(`.tab-btn[data-tab="${forcedTab}"]`);
-    if (btn) btn.click();
-  })();
-  
   // Color Scale Module — loaded from js/color-scale.js
   // Initialize with dependencies
   if (typeof window.initColorScaleModule === 'function') {
@@ -1981,20 +2832,43 @@
         if (q && q.value && q.value.trim()) return true;
         return getActiveTerms().length > 0;
       },
-      getLinesQueryValue: () => document.getElementById('linesQuery').value,
-      hasActiveLinesSearch: () => {
-        const linesQuery = document.getElementById('linesQuery');
-        return !!(linesQuery && linesQuery.value && linesQuery.value.trim());
-      },
-      doSearch: doSearch,
-      doLinesSearch: doLinesSearch 
+      doSearch: doSearch
     });
   }
   
-  // Play Detail Modal — loaded from js/play-detail.js
-  // Initialize with data dependencies
-  if (typeof window.initPlayDetail === 'function') {
-    window.initPlayDetail({ chunks, tokens, tokens2, tokens3, playsById, chunkById, characters, characterNameFilterConfig, escapeHTML });
+  // Proper-name exclusion lists — loaded from js/name-filter.js
+  if (typeof window.initNameFilter === 'function') {
+    window.initNameFilter({ playsById, characters: [], characterNameFilterConfig, onChange: () => doSearch() });
+    // A deep-linked vocabulary view rendered before the name filters existed;
+    // rebuild it now that they do (the version-stamped cache invalidates).
+    if (isVocabGranularity(gran.value) && vocabExcludeNames) doSearch();
+  }
+  if (typeof window.initCommentaryDetail === 'function') {
+    window.initCommentaryDetail({ playsById, plays, commentaryInterestConfig, escapeHTML, onStateChange: updateDeepLink });
+    const commentaryParam = new URLSearchParams(location.search).get('cm');
+    if (commentaryParam && typeof window.openCommentaryDetailFromParam === 'function') {
+      window.openCommentaryDetailFromParam(commentaryParam);
+    }
+  }
+  if (typeof window.initAddColumnPopover === 'function') {
+    window.initAddColumnPopover({
+      getCommentators: getCommentatorConfig,
+      isCommentatorSelected: (key) => selectedCommentatorColumns.has(key),
+      toggleCommentator: (key) => {
+        if (selectedCommentatorColumns.has(key)) removeCommentatorColumn(key);
+        else addCommentatorColumn(key);
+      },
+      getMetricDefs: () => METRIC_COL_DEFS,
+      isMetricEnabled: (code) => enabledMetricCodes.includes(code),
+      toggleMetric: (code) => {
+        enabledMetricCodes = enabledMetricCodes.includes(code)
+          ? enabledMetricCodes.filter(c => c !== code)
+          : METRIC_COL_DEFS.map(d => d.code).filter(c => enabledMetricCodes.includes(c) || c === code);
+        doSearch();
+      },
+      formatCount: formatCommentatorReferenceCount,
+      focusSearch: () => { if (q) q.focus(); }
+    });
   }
 
   // Character Detail Modal — loaded from js/character-detail.js
@@ -2009,9 +2883,17 @@
   <footer class="site-footer">
     Built by <a href="https://everydaysystems.com" target="_blank" rel="noopener">Reinhard Engels</a>
     <span aria-hidden="true"> · </span>
-    <a href="https://github.com/brainheart/homer-contabulate" target="_blank" rel="noopener">Source</a>
-  
+    <a href="https://github.com/brainheart/xenophon-contabulate" target="_blank" rel="noopener">Source</a>
     <span aria-hidden="true"> · </span>
-    <a href="https://github.com/brainheart/homer-contabulate/commit/0fa53c9" target="_blank" rel="noopener" title="Current deployed build">build 0fa53c9</a></footer>
+    <a id="siteUpdated" href="https://github.com/brainheart/xenophon-contabulate/commits/main" target="_blank" rel="noopener" title="Latest changes">Updated</a></footer>
+<script>
+(function () {
+  var el = document.getElementById('siteUpdated');
+  var d = new Date(document.lastModified);
+  if (el && !isNaN(d)) {
+    el.textContent = 'Updated ' + d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+  }
+})();
+</script>
 </body>
 </html>

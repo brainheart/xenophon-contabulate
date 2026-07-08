@@ -1,11 +1,9 @@
 {
   "name": "xenophon-contabulate",
-  "private": true,
-  "description": "Static Xenophon contabulate app for Perseus Greek texts.",
-  "scripts": {
-    "test:e2e": "playwright test"
-  },
+  "version": "1.0.0",
+  "description": "Static tabular search for Xenophon's works in Ancient Greek.",
+  "license": "MIT",
   "devDependencies": {
-    "@playwright/test": "^1.54.0"
+    "@playwright/test": "^1.58.2"
   }
 }

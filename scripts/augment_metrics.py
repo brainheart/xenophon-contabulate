@@ -90,6 +90,8 @@ def main():
             "segment_label": meta.get("segment_label", "segments"),
             "words": sum(p.get("total_words", 0) for p in plays),
             "distinct_words": len(tokens),
+            "commentaries": 0,
+            "comments": 0,
         },
     }
     payload.pop("text_label", None)

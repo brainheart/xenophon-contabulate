@@ -279,7 +279,12 @@ def build() -> None:
     write_json(DATA_DIR / "tokens_char.json", tokens_char)
     write_json(DATA_DIR / "tokens_char2.json", tokens_char2)
     write_json(DATA_DIR / "tokens_char3.json", tokens_char3)
-    write_json(DATA_DIR / "character_name_filter_config.json", {})
+    write_json(DATA_DIR / "character_name_filter_config.json", {
+        "enabled": False,
+        "notes": ["Disabled: this corpus does not yet have a reviewed proper-name list."],
+        "global_additions": [], "global_removals": [],
+        "play_additions": {}, "play_removals": {},
+    })
     write_json(LINES_DIR / "all_lines.json", all_lines)
 
     print(

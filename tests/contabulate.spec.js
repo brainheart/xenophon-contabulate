@@ -103,6 +103,8 @@ test.describe('Segments Search', () => {
     await expect(page.locator('#results thead th[data-key="unusualness"]')).toHaveCount(1);
     // No proper-name data in this corpus, so the toggle stays hidden
     await expect(page.locator('#vocabNamesToggle')).toBeHidden();
+    await expect(page.locator('#vocabNamesUnavailable')).toBeVisible();
+    await expect(page.locator('.ngram-exclude-btn')).toHaveCount(0);
     // The search box filters the Word column here
     await page.fill('#q', 'κῦρος');
     await page.locator('#addColumnBtn').click();

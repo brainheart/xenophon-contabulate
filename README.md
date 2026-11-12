@@ -93,3 +93,11 @@ with:
 ```text
 xenophon.contabulate.org
 ```
+
+## English lookup and glosses
+
+For readers without Greek, a lookup box above the term field finds Greek words by English meaning and inserts them as search terms; the word views add English and Dictionary form columns. Display-only: nothing in it is searched or counted, and the page works without it. See `docs/sources.html`.
+
+- Data: English Wiktionary via kaikki.org (CC BY-SA 3.0 / GFDL), cut to this text's vocabulary by `scripts/kaikki_extract.py`; gaps filled from the Greek New Testament instance's MorphGNT/Dodson analysis by `scripts/merge_morphgnt.py`. The result, `source_text/lexicon/wiktionary-extract.json`, is pinned by SHA-256 in `scripts/glossary.py`, which `scripts/build_data.py` uses to write `docs/data/glossary.json`.
+- `docs/js/glossary.js` is shared verbatim with the other non-English Contabulate instances.
+

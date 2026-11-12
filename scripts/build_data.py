@@ -286,6 +286,14 @@ def build() -> None:
         "play_additions": {}, "play_removals": {},
     })
     write_json(LINES_DIR / "all_lines.json", all_lines)
+    # English glosses and dictionary forms for every word form (reading aids).
+    from glossary import build_glossary
+    glossary, glossary_stats, source = build_glossary(tokens1, ROOT / "source_text")
+    write_json(DATA_DIR / "glossary.json", {
+        "meta": {"lang": "grc", "dir": "ltr"}, "source": source,
+        "coverage": dict(glossary_stats), **glossary,
+    })
+    print(f"Glossary: {glossary_stats['lemmas']} lemmas for {glossary_stats['forms']} forms.")
 
     print(
         f"Built {len(plays)} works, {len(characters)} work/book units, {len(chunks)} sections, "
